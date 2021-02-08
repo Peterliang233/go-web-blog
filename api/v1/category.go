@@ -17,10 +17,10 @@ func AddCategory(c *gin.Context) {
 		code = model.CreateCategory(&data)
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
-		"msg" : map[string]interface{} {
-			"data": data,
-			"code" : errmsg.CodeMsg[code],
+		"code": code,
+		"msg": map[string]interface{}{
+			"data":   data,
+			"status": errmsg.CodeMsg[code],
 		},
 	})
 }
@@ -38,29 +38,26 @@ func GetCategory(c *gin.Context) {
 	data := model.GetCategory(page.PageSize, page.PageNum)
 	code := errmsg.Success
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
+		"code": code,
 		"msg": map[string]interface{}{
-			"code" : errmsg.CodeMsg[code],
-			"data" : data,
+			"status": errmsg.CodeMsg[code],
+			"data":   data,
 		},
 	})
 }
-
 
 //删除目录
 func DelCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := model.DeleteCategory(id)
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
+		"status": code,
 		"msg": map[string]interface{}{
-			"id" : id,
+			"id":   id,
 			"code": errmsg.CodeMsg[code],
 		},
 	})
 }
-
-
 
 //编辑目录的基本信息
 func EditCategory(c *gin.Context) {
@@ -76,11 +73,11 @@ func EditCategory(c *gin.Context) {
 		c.Abort()
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
-		"msg" : map[string]interface{}{
-			"code" : errmsg.CodeMsg[code],
-			"data" : category,
-			"id" : id,
+		"status": code,
+		"msg": map[string]interface{}{
+			"code": errmsg.CodeMsg[code],
+			"data": category,
+			"id":   id,
 		},
 	})
 }

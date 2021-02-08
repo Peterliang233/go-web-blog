@@ -9,20 +9,20 @@ import (
 	"net/http"
 )
 
-
 type user struct {
-	Username string  `json:"username"`
+	Username string `json:"username"`
 	Password string `json:"password"`
 }
+
 func AuthHandler(c *gin.Context) {
 	var user user
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"code" : errmsg.ErrRequest,
-			"msg" : map[string]interface{}{
+			"code": errmsg.ErrRequest,
+			"msg": map[string]interface{}{
 				"detail": "无效的参数",
-				"data" : "",
+				"data":   "",
 			},
 		})
 		return
@@ -31,21 +31,33 @@ func AuthHandler(c *gin.Context) {
 	if user.Username == utils.Username && user.Password == utils.Password {
 		tokenString, code := middleware.GenerateToken(user.Username)
 		c.JSON(http.StatusOK, gin.H{
-			"status": code,
+			"code": code,
 			"msg": map[string]interface{}{
-				"token" : tokenString,
-				"code" : errmsg.CodeMsg[code],
-				"detail" : "登录成功",
+				"token":  tokenString,
+				"status": errmsg.CodeMsg[code],
+				"detail": "登录成功",
 			},
 		})
-	}else {
+	} else {
 		//检查是否具有登录权限
 		code := model.CheckLogin(user.Username, user.Password)
-		c.JSON(http.StatusOK, gin.H{
-			"status" : code,
-			"msg": map[string]interface{}{
-				"code" : errmsg.CodeMsg[code],
-			},
-		})
+		if code != errmsg.Success {
+			c.JSON(http.StatusOK, gin.H{
+				"code": code,
+				"msg": map[string]interface{}{
+					"status": errmsg.CodeMsg[code],
+				},
+			})
+		} else {
+			tokenString, code := middleware.GenerateToken(user.Username)
+			c.JSON(http.StatusOK, gin.H{
+				"status": code,
+				"msg": map[string]interface{}{
+					"token":  tokenString,
+					"code":   errmsg.CodeMsg[code],
+					"detail": "登录成功",
+				},
+			})
+		}
 	}
 }

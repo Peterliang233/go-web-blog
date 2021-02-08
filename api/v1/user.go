@@ -17,10 +17,10 @@ func AddUser(c *gin.Context) {
 		code = model.CreateUser(&data)
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
-		"msg" : map[string]interface{} {
-			"data": data,
-			"code" : errmsg.CodeMsg[code],
+		"code": code,
+		"msg": map[string]interface{}{
+			"data":   data,
+			"status": errmsg.CodeMsg[code],
 		},
 	})
 }
@@ -28,8 +28,9 @@ func AddUser(c *gin.Context) {
 //查询目录
 type Page struct {
 	PageSize int `json:"page_size"`
-	PageNum int `json:"page_num"`
+	PageNum  int `json:"page_num"`
 }
+
 func GetUsers(c *gin.Context) {
 	var page Page
 	_ = c.ShouldBindJSON(&page)
@@ -42,29 +43,26 @@ func GetUsers(c *gin.Context) {
 	data := model.GetUsers(page.PageSize, page.PageNum)
 	code := errmsg.Success
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
+		"code": code,
 		"msg": map[string]interface{}{
-			"code" : errmsg.CodeMsg[code],
-			"data" : data,
+			"status": errmsg.CodeMsg[code],
+			"data":   data,
 		},
 	})
 }
-
 
 //删除用户
 func DelUser(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := model.DeleteUser(id)
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
+		"status": code,
 		"msg": map[string]interface{}{
-			"id" : id,
+			"id":   id,
 			"code": errmsg.CodeMsg[code],
 		},
 	})
 }
-
-
 
 //编辑用户的基本信息，但是不会包括修改密码
 func EditUser(c *gin.Context) {
@@ -80,11 +78,11 @@ func EditUser(c *gin.Context) {
 		c.Abort()
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
-		"msg" : map[string]interface{}{
-			"code" : errmsg.CodeMsg[code],
-			"data" : user,
-			"id" : id,
+		"status": code,
+		"msg": map[string]interface{}{
+			"code": errmsg.CodeMsg[code],
+			"data": user,
+			"id":   id,
 		},
 	})
 }

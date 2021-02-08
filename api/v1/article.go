@@ -14,10 +14,10 @@ func AddArticle(c *gin.Context) {
 	_ = c.ShouldBindJSON(&data)
 	code := model.CreateArticle(&data)
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
-		"msg" : map[string]interface{} {
-			"data": data,
-			"code" : errmsg.CodeMsg[code],
+		"code": code,
+		"msg": map[string]interface{}{
+			"data":   data,
+			"status": errmsg.CodeMsg[code],
 		},
 	})
 }
@@ -34,10 +34,10 @@ func GetArticles(c *gin.Context) {
 	}
 	data, code := model.GetArticles(page.PageSize, page.PageNum)
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
+		"code": code,
 		"msg": map[string]interface{}{
-			"code" : errmsg.CodeMsg[code],
-			"data" : data,
+			"status": errmsg.CodeMsg[code],
+			"data":   data,
 		},
 	})
 }
@@ -47,22 +47,23 @@ func GetArticle(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code" : errmsg.ErrRequest,
+			"code": errmsg.ErrRequest,
 			"msg": map[string]interface{}{
-				"data": "",
+				"data":   "",
 				"status": errmsg.CodeMsg[errmsg.ErrRequest],
 			},
 		})
 	}
 	article, code := model.GetArticle(id)
 	c.JSON(http.StatusOK, gin.H{
-		"status": code,
-		"msg" : map[string]interface{}{
-			"data" : article,
-			"code" : errmsg.CodeMsg[code],
+		"code": code,
+		"msg": map[string]interface{}{
+			"data":   article,
+			"status": errmsg.CodeMsg[code],
 		},
 	})
 }
+
 //查询某一个目录下面的所有的文章
 func GetCategoryToArticle(c *gin.Context) {
 	var page Page
@@ -76,11 +77,11 @@ func GetCategoryToArticle(c *gin.Context) {
 	}
 	data, code, total := model.GetCategoryToArticles(id, page.PageSize, page.PageNum)
 	c.JSON(http.StatusOK, gin.H{
-		"status": code,
-		"msg" : map[string]interface{}{
-			"data": data,
-			"total": total,
-			"code": errmsg.CodeMsg[code],
+		"code": code,
+		"msg": map[string]interface{}{
+			"data":   data,
+			"total":  total,
+			"status": errmsg.CodeMsg[code],
 		},
 	})
 }
@@ -90,15 +91,13 @@ func DelArticle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := model.DelArticle(id)
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
+		"code": code,
 		"msg": map[string]interface{}{
-			"id" : id,
-			"code": errmsg.CodeMsg[code],
+			"id":     id,
+			"status": errmsg.CodeMsg[code],
 		},
 	})
 }
-
-
 
 //编辑文章
 func EditArticle(c *gin.Context) {
@@ -107,11 +106,11 @@ func EditArticle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := model.EditArticle(id, &article)
 	c.JSON(http.StatusOK, gin.H{
-		"status" : code,
-		"msg" : map[string]interface{}{
-			"code" : errmsg.CodeMsg[code],
-			"data" : article,
-			"id" : id,
+		"code": code,
+		"msg": map[string]interface{}{
+			"status": errmsg.CodeMsg[code],
+			"data":   article,
+			"id":     id,
 		},
 	})
 }

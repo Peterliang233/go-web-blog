@@ -8,10 +8,11 @@ import (
 	"golang.org/x/crypto/scrypt"
 	"log"
 )
+
 //检查用户是否存在
 func CheckUser(name string) int {
 	var users User
-	databases.Db.Select("id").Where("username = ?",name).First(&users)
+	databases.Db.Select("id").Where("username = ?", name).First(&users)
 	if users.ID > 0 {
 		return errmsg.ErrUserNameUsed
 	}
@@ -20,7 +21,7 @@ func CheckUser(name string) int {
 
 //创建新的用户
 func CreateUser(data *User) int {
-	data.Password = ScryptPassword(data.Password)  //对密码进行加盐处理
+	data.Password = ScryptPassword(data.Password) //对密码进行加盐处理
 	err := databases.Db.Create(data).Error
 	if err != nil {
 		return errmsg.Error
@@ -29,10 +30,10 @@ func CreateUser(data *User) int {
 }
 
 //获取用户分页列表
-func GetUsers(PageSize, PageNum int) []User{
+func GetUsers(PageSize, PageNum int) []User {
 	var users []User
-	err := databases.Db.Limit(PageSize).Offset((PageNum-1)*PageSize).Find(&users).Error
-	if err != nil && err != gorm.ErrRecordNotFound{
+	err := databases.Db.Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&users).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil
 	}
 	return users
@@ -81,7 +82,7 @@ func CheckLogin(username string, password string) int {
 	if ScryptPassword(password) != login.Password {
 		return errmsg.ErrPassword
 	}
-	if login.ID != 0 {
+	if login.Role != 0 {
 		return errmsg.ErrNotHaveRight
 	}
 	return errmsg.Success
