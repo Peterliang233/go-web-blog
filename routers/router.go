@@ -11,9 +11,12 @@ import (
 func InitRouter() {
 	gin.SetMode(utils.AppMode)
 	router := gin.Default()
+	router.MaxMultipartMemory = 8
 	auth := router.Group("api/v1")
-	auth.Use(middleware.JWTAuthMiddleware())  //jwt中间件认证身份信息
+	auth.Use(middleware.JWTAuthMiddleware()) //jwt中间件认证身份信息
 	{
+		//上传文件单个接口
+		auth.POST("/upload", v1.Upload)
 		//用户模块的接口
 		user := auth.Group("/user")
 		{
@@ -44,7 +47,7 @@ func InitRouter() {
 		routerV1.GET("/article/search", v1.GetArticles)
 		routerV1.GET("/article/one/:id", v1.GetArticle)
 		routerV1.GET("/article/category/:id", v1.GetCategoryToArticle)
-		routerV1.POST("/login", v1.AuthHandler)  //登录接口
+		routerV1.POST("/login", v1.AuthHandler) //登录接口
 	}
 	err := router.Run(utils.HttpPort)
 	if err != nil {
