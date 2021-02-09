@@ -13,7 +13,7 @@ import (
 func CheckUser(name string) int {
 	var users User
 	databases.Db.Select("id").Where("username = ?", name).First(&users)
-	if users.ID > 0 {
+	if users.ID > 1 {
 		return errmsg.ErrUserNameUsed
 	}
 	return errmsg.Success
@@ -30,13 +30,14 @@ func CreateUser(data *User) int {
 }
 
 //获取用户分页列表
-func GetUsers(PageSize, PageNum int) []User {
+func GetUsers(PageSize, PageNum int) ([]User, int) {
 	var users []User
-	err := databases.Db.Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&users).Error
+	var total int
+	err := databases.Db.Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&users).Count(total).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil
+		return nil, 0
 	}
-	return users
+	return users, total
 }
 
 //密码加密（加盐操作）
@@ -82,7 +83,7 @@ func CheckLogin(username string, password string) int {
 	if ScryptPassword(password) != login.Password {
 		return errmsg.ErrPassword
 	}
-	if login.Role != 0 {
+	if login.Role != 1 {
 		return errmsg.ErrNotHaveRight
 	}
 	return errmsg.Success

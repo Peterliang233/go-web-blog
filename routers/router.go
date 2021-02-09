@@ -12,6 +12,7 @@ func InitRouter() {
 	gin.SetMode(utils.AppMode)
 	router := gin.New() //自定义中间件
 	router.Use(gin.Recovery())
+	router.Use(middleware.Cors())   //跨域中间件
 	router.Use(middleware.Logger()) //定义日志的中间件
 	router.MaxMultipartMemory = 8
 	auth := router.Group("api/v1")

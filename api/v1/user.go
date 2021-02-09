@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/Peterliang233/go-blog/model"
 	"github.com/Peterliang233/go-blog/utils/errmsg"
+	"github.com/Peterliang233/go-blog/utils/validator"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -12,14 +13,27 @@ import (
 func AddUser(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
-	code := model.CheckUser(data.Username)
+	msg, code := validator.Validate(&data)
+	//进行数据的验证
+	if code != errmsg.Success {
+		c.JSON(http.StatusOK, gin.H{
+			"code": code,
+			"msg": map[string]interface{}{
+				"detail": msg,
+				"status": errmsg.CodeMsg[code],
+				"data":   "",
+			},
+		})
+		return
+	}
+	code = model.CheckUser(data.Username)
 	if code == errmsg.Success {
 		code = model.CreateUser(&data)
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
-			"data":   data,
+			"data":   "",
 			"status": errmsg.CodeMsg[code],
 		},
 	})
@@ -40,13 +54,14 @@ func GetUsers(c *gin.Context) {
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
-	data := model.GetUsers(page.PageSize, page.PageNum)
+	data, total := model.GetUsers(page.PageSize, page.PageNum)
 	code := errmsg.Success
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
 			"status": errmsg.CodeMsg[code],
 			"data":   data,
+			"total":  total,
 		},
 	})
 }
