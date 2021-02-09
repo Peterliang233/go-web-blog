@@ -10,7 +10,9 @@ import (
 
 func InitRouter() {
 	gin.SetMode(utils.AppMode)
-	router := gin.Default()
+	router := gin.New() //自定义中间件
+	router.Use(gin.Recovery())
+	router.Use(middleware.Logger()) //定义日志的中间件
 	router.MaxMultipartMemory = 8
 	auth := router.Group("api/v1")
 	auth.Use(middleware.JWTAuthMiddleware()) //jwt中间件认证身份信息
