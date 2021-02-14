@@ -32,14 +32,14 @@ func init() {
 }
 
 func LoadServer(file *ini.File) {
-	AppMode = file.Section("server").Key("AppMode").MustString("AppMode")
-	HttpPort = file.Section("server").Key("HttpPort").MustString("HttpPort")
-	Secret = file.Section("server").Key("Secret").MustString("Secret")
+	AppMode = file.Section("server").Key("AppMode").MustString("debug")
+	HttpPort = file.Section("server").Key("HttpPort").MustString(":9090")
+	Secret = file.Section("server").Key("Secret").MustString("secret")
 }
 
 func LoadData(file *ini.File) {
 	Db = file.Section("database").Key("Db").MustString("mysql")
-	DbHost  = file.Section("database").Key("DbHost").MustString("localhost")
+	DbHost = file.Section("database").Key("DbHost").MustString("localhost")
 	DbPort = file.Section("database").Key("DbPort").MustString("3306")
 	DbUser = file.Section("database").Key("DbUser").MustString("root")
 	DbPassword = file.Section("database").Key("DbPassword").MustString("mysqlpassword")

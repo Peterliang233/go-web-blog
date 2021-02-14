@@ -35,6 +35,7 @@ func AddUser(c *gin.Context) {
 		"msg": map[string]interface{}{
 			"data":   "",
 			"status": errmsg.CodeMsg[code],
+			"detail": msg,
 		},
 	})
 }

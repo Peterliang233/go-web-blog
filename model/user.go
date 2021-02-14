@@ -46,6 +46,7 @@ func ScryptPassword(password string) string {
 	salt := make([]byte, 8)
 	salt = []byte{23, 32, 21, 11, 11, 22, 11, 0}
 	HashPassword, err := scrypt.Key([]byte(password), salt, 32768, 8, 1, KeyLen)
+	//以上是加盐的一些过程
 	if err != nil {
 		log.Fatal(err)
 	}

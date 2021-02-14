@@ -7,6 +7,7 @@ import (
 	"path"
 )
 
+//上传数据接口
 func Upload(c *gin.Context) {
 	file, err := c.FormFile("file")
 	if err != nil {
