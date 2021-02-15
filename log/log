@@ -1,3 +1,5 @@
-time="2021-02-09T21:44:53+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="0 ms" dataSize=99 ip="::1" path=/api/v1/user/add status=200
-time="2021-02-09T21:45:01+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1 ms" dataSize=99 ip="::1" path=/api/v1/user/add status=200
-200
+time="2021-02-15T11:40:18+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1 ms" dataSize=83 ip="::1" path=/api/v1/category/add status=200
+time="2021-02-15T11:42:35+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1 ms" dataSize=83 ip="::1" path=/api/v1/category/add status=200
+time="2021-02-15T11:42:48+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1 ms" dataSize=86 ip="::1" path=/api/v1/category/add status=200
+time="2021-02-15T11:42:57+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="7 ms" dataSize=64 ip="::1" path=/api/v1/category/add status=200
+00

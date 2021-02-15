@@ -12,7 +12,7 @@ import (
 func AddCategory(c *gin.Context) {
 	var data model.Category
 	_ = c.ShouldBindJSON(&data)
-	code := model.CheckCategory(data.Name)
+	code := model.CheckCategory(data)
 	if code == errmsg.Success {
 		code = model.CreateCategory(&data)
 	}
@@ -64,7 +64,7 @@ func EditCategory(c *gin.Context) {
 	var category model.Category
 	_ = c.ShouldBindJSON(&category)
 	id, _ := strconv.Atoi(c.Param("id"))
-	code := model.CheckCategory(category.Name)
+	code := model.CheckCategory(category)
 	if code == errmsg.Success {
 		//执行更新的操作
 		model.EditCategory(id, &category)

@@ -7,13 +7,23 @@ import (
 )
 
 //检查目录是否存在
-func CheckCategory(name string) int {
+func CheckCategory(data Category) int {
 	var category Category
-	databases.Db.Select("id").Where("name = ?",name).First(&category)
-	if category.ID > 0 {
-		return errmsg.ErrUserNameUsed
+	err := databases.Db.Where("name = ?", data.Name).First(&category).Error
+	if err == gorm.ErrRecordNotFound {
+		err = databases.Db.Where("id = ?", data.ID).First(&category).Error
+		if err == gorm.ErrRecordNotFound {
+			return errmsg.Success
+		} else if err != nil {
+			return errmsg.ErrDatabaseFind
+		} else {
+			return errmsg.ErrCategoryIdUsed
+		}
+	} else if err != nil {
+		return errmsg.ErrDatabaseFind
+	} else {
+		return errmsg.ErrCategoryUsed
 	}
-	return errmsg.Success
 }
 
 //创建新的目录
@@ -26,10 +36,10 @@ func CreateCategory(data *Category) int {
 }
 
 //获取用户分页列表
-func GetCategory(PageSize, PageNum int) []Category{
+func GetCategory(PageSize, PageNum int) []Category {
 	var category []Category
-	err := databases.Db.Limit(PageSize).Offset((PageNum-1)*PageSize).Find(&category).Error
-	if err != nil && err != gorm.ErrRecordNotFound{
+	err := databases.Db.Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&category).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil
 	}
 	return category

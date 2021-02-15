@@ -23,6 +23,6 @@ type User struct {
 
 //目录
 type Category struct {
-	ID   uint   `gorm:"primaryKey;autoIncrement:false" json:"id"`
+	ID   uint   `gorm:"type:int;primary_key;auto_increment" json:"id"`
 	Name string `gorm:"type:varchar(30);not null" json:"name"`
 }

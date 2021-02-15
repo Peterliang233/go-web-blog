@@ -15,7 +15,8 @@ const (
 	ErrArticleNotExist = 2001
 	//code3000开头的是分类模块错误
 	ErrCategoryUsed     = 3001
-	ErrCategoryNotExist = 3002
+	ErrCategoryIdUsed   = 3002
+	ErrCategoryNotExist = 3003
 	//token类错误
 	InvalidToken      = 4001
 	TokenNotExist     = 4002
@@ -25,6 +26,8 @@ const (
 	//登录类错误
 	ErrPassword     = 5001
 	ErrNotHaveRight = 5002
+	//数据库查找类错误
+	ErrDatabaseFind = 6001
 )
 
 //错误信息字典
@@ -35,7 +38,8 @@ var CodeMsg = map[int]string{
 	ErrUserNotExist:      "用户名不存在",
 	ErrUserPasswordWrong: "用户密码错误",
 	ErrUserTokenNotExist: "token不存在",
-	ErrCategoryUsed:      "目录已经存在",
+	ErrCategoryUsed:      "目录名已经存在",
+	ErrCategoryIdUsed:    "目录id已经存在",
 	ErrCategoryNotExist:  "该目录不存在",
 	InvalidToken:         "token不合法",
 	TokenNotExist:        "token不存在",
@@ -45,6 +49,7 @@ var CodeMsg = map[int]string{
 	ErrRequest:           "请求错误",
 	ErrPassword:          "密码错误",
 	ErrNotHaveRight:      "用户无登录权限",
+	ErrDatabaseFind:      "数据库查找错误",
 }
 
 ////获取错误码对应的信息
