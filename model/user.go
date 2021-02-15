@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"github.com/Peterliang233/go-blog/databases"
 	"github.com/Peterliang233/go-blog/utils/errmsg"
-	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/scrypt"
 	"log"
 )
@@ -33,8 +32,12 @@ func CreateUser(data *User) int {
 func GetUsers(PageSize, PageNum int) ([]User, int) {
 	var users []User
 	var total int
-	err := databases.Db.Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&users).Count(total).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
+	err := databases.Db.Select("id,username,role").Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&users).Error
+	if err != nil {
+		return nil, 0
+	}
+	err = databases.Db.Table("user").Count(&total).Error
+	if err != nil {
 		return nil, 0
 	}
 	return users, total
@@ -84,7 +87,7 @@ func CheckLogin(username string, password string) int {
 	if ScryptPassword(password) != login.Password {
 		return errmsg.ErrPassword
 	}
-	if login.Role != 1 {
+	if login.Role > 2 {
 		return errmsg.ErrNotHaveRight
 	}
 	return errmsg.Success

@@ -1,3 +1,5 @@
 *.idea/
 *.xml
 *.log
+log
+log.log
