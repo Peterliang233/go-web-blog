@@ -9,9 +9,9 @@ import (
 //检查目录是否存在
 func CheckCategory(data Category) int {
 	var category Category
-	err := databases.Db.Where("name = ?", data.Name).First(&category).Error
+	err := databases.Db.Where("id = ?", data.ID).First(&category).Error
 	if err == gorm.ErrRecordNotFound {
-		err = databases.Db.Where("id = ?", data.ID).First(&category).Error
+		err = databases.Db.Where("name = ?", data.Name).First(&category).Error
 		if err == gorm.ErrRecordNotFound {
 			return errmsg.Success
 		} else if err != nil {
@@ -55,14 +55,34 @@ func DeleteCategory(id int) int {
 	return errmsg.Success
 }
 
-//编辑目录
-func EditCategory(id int, data *Category) int {
+//编辑目录,修改目录id对应的名字
+func EditCategory(id int, name string) int {
 	var category Category
 	var UserMap = make(map[string]interface{})
-	UserMap["name"] = data.Name
+	UserMap["name"] = name
 	err := databases.Db.Model(&category).Where("id = ?", id).Updates(UserMap).Error
 	if err != nil {
 		return errmsg.Error
+	}
+	return errmsg.Success
+}
+
+func CheckCategoryName(name string) int {
+	var category Category
+	if err := databases.Db.Where("name = ?", name).First(&category).Error; err == gorm.ErrRecordNotFound {
+		return errmsg.Success
+	} else if err != nil {
+		return errmsg.ErrDatabaseFind
+	}
+	return errmsg.ErrCategoryUsed
+}
+
+func CheckCategoryId(id int) int {
+	var category Category
+	if err := databases.Db.Where("id = ?", id).First(&category).Error; err == gorm.ErrRecordNotFound {
+		return errmsg.ErrCategoryNotExist
+	} else if err != nil {
+		return errmsg.ErrDatabaseFind
 	}
 	return errmsg.Success
 }

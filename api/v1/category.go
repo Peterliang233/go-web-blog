@@ -61,22 +61,21 @@ func DelCategory(c *gin.Context) {
 
 //编辑目录的基本信息
 func EditCategory(c *gin.Context) {
-	var category model.Category
-	_ = c.ShouldBindJSON(&category)
 	id, _ := strconv.Atoi(c.Param("id"))
-	code := model.CheckCategory(category)
+	name := c.Query("name")
+	code := model.CheckCategoryName(name)
 	if code == errmsg.Success {
 		//执行更新的操作
-		model.EditCategory(id, &category)
-	}
-	if code == errmsg.ErrCategoryUsed {
-		c.Abort()
+		code = model.CheckCategoryId(id)
+		if code == errmsg.Success {
+			model.EditCategory(id, name)
+		}
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{
 			"code": errmsg.CodeMsg[code],
-			"data": category,
+			"data": name,
 			"id":   id,
 		},
 	})
