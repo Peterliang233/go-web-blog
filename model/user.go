@@ -92,3 +92,14 @@ func CheckLogin(username string, password string) int {
 	}
 	return errmsg.Success
 }
+
+func GetRight(username string) (code int) {
+	var user User
+	if err := databases.Db.Where("username = ?", username).First(&user).Error; err != nil {
+		return errmsg.Error
+	}
+	if user.Role != 1 {
+		return errmsg.ErrUserNotHaveAddRight
+	}
+	return errmsg.Success
+}

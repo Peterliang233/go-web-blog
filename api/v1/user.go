@@ -13,6 +13,18 @@ import (
 func AddUser(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
+	username := c.MustGet("username").(string)
+	code := model.GetRight(username)
+	if code != errmsg.Success {
+		c.JSON(http.StatusOK, gin.H{
+			"code": code,
+			"msg": map[string]interface{}{
+				"status": errmsg.CodeMsg[code],
+				"data":   "",
+			},
+		})
+		return
+	}
 	msg, code := validator.Validate(&data)
 	//进行数据的验证
 	if code != errmsg.Success {

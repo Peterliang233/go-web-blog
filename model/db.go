@@ -21,7 +21,7 @@ func InitDb() {
 		))
 	databases.Db.SingularTable(true) //不给表的名字加复数
 	databases.Db.AutoMigrate(&Article{})
-	databases.Db.AutoMigrate(&User{})
+	//databases.Db.AutoMigrate(&User{})
 	databases.Db.AutoMigrate(&Category{})
 	if err != nil {
 		fmt.Println("数据库打开失败")

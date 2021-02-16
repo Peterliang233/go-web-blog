@@ -15,7 +15,7 @@ type Article struct {
 
 //用户
 type User struct {
-	gorm.Model
+	ID       int    `gorm:"type:int;not null;primaryKey;auto_increment" json:"id"`
 	Username string `gorm:"type:varchar(20);not null" json:"username" validate:"required,min=6,max=12" label:"用户名"`
 	Password string `gorm:"type:varchar(20);not null" json:"password" validate:"required,min=6,max=12" label:"用户密码"`
 	Role     int    `gorm:"type:int; DEFAULT:2" json:"role" validate:"required,gte=2" label:"权限码"`
@@ -23,7 +23,7 @@ type User struct {
 
 //目录
 type Category struct {
-	ID   uint   `gorm:"type:int;primary_key;auto_increment" json:"id"`
+	ID   uint   `gorm:"type:int;not null;primary_key;auto_increment" json:"id"`
 	Name string `gorm:"type:varchar(30);not null" json:"name"`
 }
 
