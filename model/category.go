@@ -35,7 +35,7 @@ func CreateCategory(data *Category) int {
 	return errmsg.Success
 }
 
-//获取用户分页列表
+//获取分类的分页列表
 func GetCategory(PageSize, PageNum int) []Category {
 	var category []Category
 	err := databases.Db.Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&category).Error

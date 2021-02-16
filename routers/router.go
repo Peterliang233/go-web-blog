@@ -27,14 +27,14 @@ func InitRouter() {
 			user.PUT("/:id", v1.EditUser)
 			user.DELETE("/:id", v1.DelUser)
 		}
-		//文章模块的接口
+		//分类模块的接口
 		article := auth.Group("/category")
 		{
 			article.POST("/add", v1.AddCategory)
 			article.PUT("/:id", v1.EditCategory)
 			article.DELETE("/:id", v1.DelCategory)
 		}
-		//分类模块的接口
+		//文章模块的接口
 		category := auth.Group("/article")
 		{
 			category.POST("/add", v1.AddArticle)

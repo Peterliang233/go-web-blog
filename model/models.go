@@ -26,3 +26,10 @@ type Category struct {
 	ID   uint   `gorm:"type:int;primary_key;auto_increment" json:"id"`
 	Name string `gorm:"type:varchar(30);not null" json:"name"`
 }
+
+//评论,多个评论对应一篇文章
+type Comment struct {
+	article Article `gorm:"foreignKey:aid" json:"article"`
+	aid     int     `gorm:"int;not null" json:"aid"`
+	content string  `gorm:"text;not null" json:"content"`
+}
