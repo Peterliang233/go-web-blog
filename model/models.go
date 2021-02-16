@@ -9,7 +9,7 @@ type Article struct {
 	Title   string `gorm:"type:varchar(30);not null" json:"title"`
 	Cid     int    `gorm:"type:int;not null" json:"cid"`
 	Desc    string `gorm:"type:varchar(30);" json:"desc"`
-	Content string `gorm:"type:varchar(30);not null" json:"content"`
+	Content string `gorm:"type:text;not null" json:"content"`
 	Img     string `gorm:"type:varchar(30);" json:"img"`
 }
 
