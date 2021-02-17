@@ -12,6 +12,7 @@ const (
 	ErrUserNotExist        = 1003
 	ErrUserTokenNotExist   = 1004
 	ErrUserNotHaveAddRight = 1005
+	ErrUserEmailUsed       = 1006
 	//code2000开头的是文章模块错误
 	ErrArticleNotExist = 2001
 	//code3000开头的是分类模块错误
@@ -52,6 +53,7 @@ var CodeMsg = map[int]string{
 	ErrNotHaveRight:        "用户无登录权限",
 	ErrDatabaseFind:        "数据库查找错误",
 	ErrUserNotHaveAddRight: "用户没有添加权限",
+	ErrUserEmailUsed:       "用户邮箱被使用",
 }
 
 ////获取错误码对应的信息

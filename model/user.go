@@ -4,18 +4,35 @@ import (
 	"encoding/base64"
 	"github.com/Peterliang233/go-blog/databases"
 	"github.com/Peterliang233/go-blog/utils/errmsg"
+	"github.com/jinzhu/gorm"
+	"github.com/jordan-wright/email"
+	_ "github.com/jordan-wright/email"
 	"golang.org/x/crypto/scrypt"
 	"log"
+	"net/smtp"
+	_ "net/smtp"
+	"time"
 )
 
-//检查用户是否存在
-func CheckUser(name string) int {
+//检查用户名和邮箱是否存在
+func CheckUser(name string, email string) int {
 	var users User
-	databases.Db.Select("id").Where("username = ?", name).First(&users)
-	if users.ID > 1 {
-		return errmsg.ErrUserNameUsed
+	if err := databases.Db.Table("user").Where("username = ?", name).First(&users).Error; err != nil {
+		if err != gorm.ErrRecordNotFound {
+			return errmsg.ErrDatabaseFind
+		}
+		if err = databases.Db.Table("user").Where("email = ?", email).First(&users).Error; err != nil {
+			if err != gorm.ErrRecordNotFound {
+				return errmsg.ErrDatabaseFind
+			} else {
+				return errmsg.Success
+			}
+		} else {
+			return errmsg.ErrUserEmailUsed //用户邮箱存在
+		}
+	} else {
+		return errmsg.ErrUserNameUsed //用户名存在
 	}
-	return errmsg.Success
 }
 
 //创建新的用户
@@ -71,6 +88,7 @@ func EditUser(id int, data *User) int {
 	var user User
 	var UserMap = make(map[string]interface{})
 	UserMap["username"] = data.Username
+	UserMap["email"] = data.Email
 	UserMap["id"] = data.ID
 	err := databases.Db.Model(&user).Where("id = ?", id).Updates(UserMap).Error
 	if err != nil {
@@ -100,6 +118,20 @@ func GetRight(username string) (code int) {
 	}
 	if user.Role != 1 {
 		return errmsg.ErrUserNotHaveAddRight
+	}
+	return errmsg.Success
+}
+
+func SendEmail(Email string) int {
+	e := email.NewEmail()
+	e.From = "Peterliang <ncuyanping666@126.com>"
+	e.To = []string{Email}
+	e.Subject = "博客注册通知"
+	e.Text = []byte("博客注册通知！！！\n亲爱的" + Email + ",您的邮箱在" +
+		time.Now().Format("2006-01-02 15:04:05") + "被用于注册ginBlog，感谢您的使用，希望您使用愉快^_^\nPeterliang")
+	err := e.Send("smtp.126.com:25", smtp.PlainAuth("", "ncuyanping666@126.com", "OICRHJRGCHSPAAIZ", "smtp.126.com"))
+	if err != nil {
+		return errmsg.Error
 	}
 	return errmsg.Success
 }

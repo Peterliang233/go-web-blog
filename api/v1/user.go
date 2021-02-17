@@ -38,16 +38,21 @@ func AddUser(c *gin.Context) {
 		})
 		return
 	}
-	code = model.CheckUser(data.Username)
+	code = model.CheckUser(data.Username, data.Email) //检查用户名和邮箱是否已经被使用
 	if code == errmsg.Success {
 		code = model.CreateUser(&data)
+		if code == errmsg.Success {
+			model.SendEmail(data.Email)
+		}
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
-			"data":   "",
+			"data": map[string]string{
+				"username": data.Username,
+				"email":    data.Email,
+			},
 			"status": errmsg.CodeMsg[code],
-			"detail": msg,
 		},
 	})
 }
@@ -97,14 +102,14 @@ func EditUser(c *gin.Context) {
 	var user model.User
 	_ = c.ShouldBindJSON(&user)
 	id, _ := strconv.Atoi(c.Param("id"))
-	code := model.CheckUser(user.Username)
+	code := model.CheckUser(user.Username, user.Email)
 	if code == errmsg.Success {
 		//执行更新的操作
 		model.EditUser(id, &user)
 	}
-	if code == errmsg.ErrUserNameUsed {
-		c.Abort()
-	}
+	//if code == errmsg.ErrUserNameUsed {
+	//	c.Abort()
+	//}
 	c.JSON(http.StatusOK, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{

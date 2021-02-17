@@ -3,7 +3,6 @@ package v1
 import (
 	"github.com/Peterliang233/go-blog/middleware"
 	"github.com/Peterliang233/go-blog/model"
-	"github.com/Peterliang233/go-blog/utils"
 	"github.com/Peterliang233/go-blog/utils/errmsg"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -28,36 +27,56 @@ func AuthHandler(c *gin.Context) {
 		return
 	}
 	//超级管理员，初始化配置文件
-	if user.Username == utils.Username && user.Password == utils.Password {
-		tokenString, code := middleware.GenerateToken(user.Username)
+	//if user.Username == utils.Username && user.Password == utils.Password {
+	//	tokenString, code := middleware.GenerateToken(user.Username)
+	//	c.JSON(http.StatusOK, gin.H{
+	//		"code": code,
+	//		"msg": map[string]interface{}{
+	//			"token":  tokenString,
+	//			"status": errmsg.CodeMsg[code],
+	//			"detail": "登录成功",
+	//		},
+	//	})
+	//} else {
+	//	//检查是否具有登录权限
+	//	code := model.CheckLogin(user.Username, user.Password)
+	//	if code != errmsg.Success {
+	//		c.JSON(http.StatusOK, gin.H{
+	//			"code": code,
+	//			"msg": map[string]interface{}{
+	//				"status": errmsg.CodeMsg[code],
+	//			},
+	//		})
+	//	} else {
+	//		tokenString, code := middleware.GenerateToken(user.Username)
+	//		c.JSON(http.StatusOK, gin.H{
+	//			"status": code,
+	//			"msg": map[string]interface{}{
+	//				"token":  tokenString,
+	//				"code":   errmsg.CodeMsg[code],
+	//				"detail": "登录成功",
+	//			},
+	//		})
+	//	}
+	//}
+	//检查是否具有登录权限
+	code := model.CheckLogin(user.Username, user.Password)
+	if code != errmsg.Success {
 		c.JSON(http.StatusOK, gin.H{
 			"code": code,
 			"msg": map[string]interface{}{
-				"token":  tokenString,
 				"status": errmsg.CodeMsg[code],
-				"detail": "登录成功",
 			},
 		})
 	} else {
-		//检查是否具有登录权限
-		code := model.CheckLogin(user.Username, user.Password)
-		if code != errmsg.Success {
-			c.JSON(http.StatusOK, gin.H{
-				"code": code,
-				"msg": map[string]interface{}{
-					"status": errmsg.CodeMsg[code],
-				},
-			})
-		} else {
-			tokenString, code := middleware.GenerateToken(user.Username)
-			c.JSON(http.StatusOK, gin.H{
-				"status": code,
-				"msg": map[string]interface{}{
-					"token":  tokenString,
-					"code":   errmsg.CodeMsg[code],
-					"detail": "登录成功",
-				},
-			})
-		}
+		tokenString, code := middleware.GenerateToken(user.Username)
+		c.JSON(http.StatusOK, gin.H{
+			"status": code,
+			"msg": map[string]interface{}{
+				"token":  tokenString,
+				"code":   errmsg.CodeMsg[code],
+				"detail": "登录成功",
+			},
+		})
 	}
 }
