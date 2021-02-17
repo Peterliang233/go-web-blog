@@ -1,8 +1,9 @@
 package v1
 
 import (
-	"github.com/Peterliang233/go-blog/model"
-	"github.com/Peterliang233/go-blog/utils/errmsg"
+	"github.com/Peterliang233/go-blog/errmsg"
+	"github.com/Peterliang233/go-blog/service/v1/api/article"
+	"github.com/Peterliang233/go-blog/service/v1/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -12,9 +13,9 @@ import (
 func AddCategory(c *gin.Context) {
 	var data model.Category
 	_ = c.ShouldBindJSON(&data)
-	code := model.CheckCategory(data)
+	code := article.CheckCategory(data)
 	if code == errmsg.Success {
-		code = model.CreateCategory(&data)
+		code = article.CreateCategory(&data)
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
@@ -35,7 +36,7 @@ func GetCategory(c *gin.Context) {
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
-	data := model.GetCategory(page.PageSize, page.PageNum)
+	data := article.GetCategory(page.PageSize, page.PageNum)
 	code := errmsg.Success
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
@@ -49,7 +50,7 @@ func GetCategory(c *gin.Context) {
 //删除目录
 func DelCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	code := model.DeleteCategory(id)
+	code := article.DeleteCategory(id)
 	c.JSON(http.StatusOK, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{
@@ -63,12 +64,12 @@ func DelCategory(c *gin.Context) {
 func EditCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	name := c.Query("name")
-	code := model.CheckCategoryName(name)
+	code := article.CheckCategoryName(name)
 	if code == errmsg.Success {
 		//执行更新的操作
-		code = model.CheckCategoryId(id)
+		code = article.CheckCategoryId(id)
 		if code == errmsg.Success {
-			model.EditCategory(id, name)
+			article.EditCategory(id, name)
 		}
 	}
 	c.JSON(http.StatusOK, gin.H{

@@ -1,21 +1,21 @@
-package routers
+package router
 
 import (
 	"fmt"
-	v1 "github.com/Peterliang233/go-blog/api/v1"
+	"github.com/Peterliang233/go-blog/configs"
 	"github.com/Peterliang233/go-blog/middleware"
-	"github.com/Peterliang233/go-blog/utils"
+	v1 "github.com/Peterliang233/go-blog/router/v1"
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter() {
-	gin.SetMode(utils.AppMode)
+	gin.SetMode(configs.AppMode)
 	router := gin.New() //自定义中间件
 	router.Use(gin.Recovery())
 	router.Use(middleware.Cors())   //跨域中间件
 	router.Use(middleware.Logger()) //定义日志的中间件
 	router.MaxMultipartMemory = 8
-	auth := router.Group("api/v1")
+	auth := router.Group("ap/v1")
 	auth.Use(middleware.JWTAuthMiddleware()) //jwt中间件认证身份信息
 	{
 		//上传文件单个接口
@@ -43,7 +43,7 @@ func InitRouter() {
 		}
 	}
 	//获取信息的部分，这部分可以作为公共接口暴露在外面
-	routerV1 := router.Group("/api/v1")
+	routerV1 := router.Group("/ap/v1")
 	{
 		routerV1.GET("/user/search", v1.GetUsers)
 		routerV1.GET("/category/search", v1.GetCategory)
@@ -52,7 +52,7 @@ func InitRouter() {
 		routerV1.GET("/article/category/:id", v1.GetCategoryToArticle)
 		routerV1.POST("/login", v1.AuthHandler) //登录接口
 	}
-	err := router.Run(utils.HttpPort)
+	err := router.Run(configs.HttpPort)
 	if err != nil {
 		fmt.Println(" Listening error")
 	}

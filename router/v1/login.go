@@ -1,9 +1,9 @@
 package v1
 
 import (
+	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/middleware"
-	"github.com/Peterliang233/go-blog/model"
-	"github.com/Peterliang233/go-blog/utils/errmsg"
+	user2 "github.com/Peterliang233/go-blog/service/v1/api/user"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -27,7 +27,7 @@ func AuthHandler(c *gin.Context) {
 		return
 	}
 	//超级管理员，初始化配置文件
-	//if user.Username == utils.Username && user.Password == utils.Password {
+	//if user.Username == service.Username && user.Password == service.Password {
 	//	tokenString, code := middleware.GenerateToken(user.Username)
 	//	c.JSON(http.StatusOK, gin.H{
 	//		"code": code,
@@ -60,7 +60,7 @@ func AuthHandler(c *gin.Context) {
 	//	}
 	//}
 	//检查是否具有登录权限
-	code := model.CheckLogin(user.Username, user.Password)
+	code := user2.CheckLogin(user.Username, user.Password)
 	if code != errmsg.Success {
 		c.JSON(http.StatusOK, gin.H{
 			"code": code,

@@ -2,8 +2,8 @@ package model
 
 import (
 	"fmt"
+	"github.com/Peterliang233/go-blog/configs"
 	"github.com/Peterliang233/go-blog/databases"
-	"github.com/Peterliang233/go-blog/utils"
 	"github.com/jinzhu/gorm"
 	"time"
 )
@@ -11,13 +11,13 @@ import (
 //初始化数据库
 func InitDb() {
 	var err error
-	databases.Db, err = gorm.Open(utils.Db,
+	databases.Db, err = gorm.Open(configs.Db,
 		fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
-			utils.DbUser,
-			utils.DbPassword,
-			utils.DbHost,
-			utils.DbPort,
-			utils.DbName,
+			configs.DbUser,
+			configs.DbPassword,
+			configs.DbHost,
+			configs.DbPort,
+			configs.DbName,
 		))
 	databases.Db.SingularTable(true) //不给表的名字加复数
 	databases.Db.AutoMigrate(&Article{})

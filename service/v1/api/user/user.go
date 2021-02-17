@@ -1,9 +1,10 @@
-package model
+package user
 
 import (
 	"encoding/base64"
 	"github.com/Peterliang233/go-blog/databases"
-	"github.com/Peterliang233/go-blog/utils/errmsg"
+	"github.com/Peterliang233/go-blog/errmsg"
+	"github.com/Peterliang233/go-blog/service/v1/model"
 	"github.com/jinzhu/gorm"
 	"github.com/jordan-wright/email"
 	_ "github.com/jordan-wright/email"
@@ -16,7 +17,7 @@ import (
 
 //检查用户名和邮箱是否存在
 func CheckUser(name string, email string) int {
-	var users User
+	var users model.User
 	if err := databases.Db.Table("user").Where("username = ?", name).First(&users).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
 			return errmsg.ErrDatabaseFind
@@ -36,7 +37,7 @@ func CheckUser(name string, email string) int {
 }
 
 //创建新的用户
-func CreateUser(data *User) int {
+func CreateUser(data *model.User) int {
 	data.Password = ScryptPassword(data.Password) //对密码进行加盐处理
 	err := databases.Db.Create(data).Error
 	if err != nil {
@@ -46,8 +47,8 @@ func CreateUser(data *User) int {
 }
 
 //获取用户分页列表
-func GetUsers(PageSize, PageNum int) ([]User, int) {
-	var users []User
+func GetUsers(PageSize, PageNum int) ([]model.User, int) {
+	var users []model.User
 	var total int
 	err := databases.Db.Select("id,username,role").Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&users).Error
 	if err != nil {
@@ -75,7 +76,7 @@ func ScryptPassword(password string) string {
 
 //删除用户
 func DeleteUser(id int) int {
-	var user User
+	var user model.User
 	err := databases.Db.Where("id = ?", id).Delete(&user).Error
 	if err != nil {
 		return errmsg.Error
@@ -84,8 +85,8 @@ func DeleteUser(id int) int {
 }
 
 //编辑用户
-func EditUser(id int, data *User) int {
-	var user User
+func EditUser(id int, data *model.User) int {
+	var user model.User
 	var UserMap = make(map[string]interface{})
 	UserMap["username"] = data.Username
 	UserMap["email"] = data.Email
@@ -98,7 +99,7 @@ func EditUser(id int, data *User) int {
 }
 
 func CheckLogin(username string, password string) int {
-	var login User
+	var login model.User
 	if err := databases.Db.Where("username = ?", username).First(&login).Error; err != nil {
 		return errmsg.Error
 	}
@@ -112,7 +113,7 @@ func CheckLogin(username string, password string) int {
 }
 
 func GetRight(username string) (code int) {
-	var user User
+	var user model.User
 	if err := databases.Db.Where("username = ?", username).First(&user).Error; err != nil {
 		return errmsg.Error
 	}

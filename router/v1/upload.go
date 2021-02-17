@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"github.com/Peterliang233/go-blog/utils/errmsg"
+	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"path"

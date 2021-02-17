@@ -1,9 +1,10 @@
 package v1
 
 import (
-	"github.com/Peterliang233/go-blog/model"
-	"github.com/Peterliang233/go-blog/utils/errmsg"
-	"github.com/Peterliang233/go-blog/utils/validator"
+	"github.com/Peterliang233/go-blog/errmsg"
+	user2 "github.com/Peterliang233/go-blog/service/v1/api/user"
+	"github.com/Peterliang233/go-blog/service/v1/api/user/validator"
+	"github.com/Peterliang233/go-blog/service/v1/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -14,7 +15,7 @@ func AddUser(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
 	username := c.MustGet("username").(string)
-	code := model.GetRight(username)
+	code := user2.GetRight(username)
 	if code != errmsg.Success {
 		c.JSON(http.StatusOK, gin.H{
 			"code": code,
@@ -38,11 +39,11 @@ func AddUser(c *gin.Context) {
 		})
 		return
 	}
-	code = model.CheckUser(data.Username, data.Email) //检查用户名和邮箱是否已经被使用
+	code = user2.CheckUser(data.Username, data.Email) //检查用户名和邮箱是否已经被使用
 	if code == errmsg.Success {
-		code = model.CreateUser(&data)
+		code = user2.CreateUser(&data)
 		if code == errmsg.Success {
-			model.SendEmail(data.Email)
+			user2.SendEmail(data.Email)
 		}
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -72,7 +73,7 @@ func GetUsers(c *gin.Context) {
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
-	data, total := model.GetUsers(page.PageSize, page.PageNum)
+	data, total := user2.GetUsers(page.PageSize, page.PageNum)
 	code := errmsg.Success
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
@@ -87,7 +88,7 @@ func GetUsers(c *gin.Context) {
 //删除用户
 func DelUser(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	code := model.DeleteUser(id)
+	code := user2.DeleteUser(id)
 	c.JSON(http.StatusOK, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{
@@ -102,10 +103,10 @@ func EditUser(c *gin.Context) {
 	var user model.User
 	_ = c.ShouldBindJSON(&user)
 	id, _ := strconv.Atoi(c.Param("id"))
-	code := model.CheckUser(user.Username, user.Email)
+	code := user2.CheckUser(user.Username, user.Email)
 	if code == errmsg.Success {
 		//执行更新的操作
-		model.EditUser(id, &user)
+		user2.EditUser(id, &user)
 	}
 	//if code == errmsg.ErrUserNameUsed {
 	//	c.Abort()

@@ -1,8 +1,9 @@
 package v1
 
 import (
-	"github.com/Peterliang233/go-blog/model"
-	"github.com/Peterliang233/go-blog/utils/errmsg"
+	"github.com/Peterliang233/go-blog/errmsg"
+	ModelArticle "github.com/Peterliang233/go-blog/service/v1/api/article"
+	"github.com/Peterliang233/go-blog/service/v1/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -12,7 +13,7 @@ import (
 func AddArticle(c *gin.Context) {
 	var data model.Article
 	_ = c.ShouldBindJSON(&data)
-	code := model.CreateArticle(&data)
+	code := ModelArticle.CreateArticle(&data)
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -32,7 +33,7 @@ func GetArticles(c *gin.Context) {
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
-	data, code := model.GetArticles(page.PageSize, page.PageNum)
+	data, code := ModelArticle.GetArticles(page.PageSize, page.PageNum)
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -54,7 +55,7 @@ func GetArticle(c *gin.Context) {
 			},
 		})
 	}
-	article, code := model.GetArticle(id)
+	article, code := ModelArticle.GetArticle(id)
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -75,7 +76,7 @@ func GetCategoryToArticle(c *gin.Context) {
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
-	data, code, total := model.GetCategoryToArticles(id, page.PageSize, page.PageNum)
+	data, code, total := ModelArticle.GetCategoryToArticles(id, page.PageSize, page.PageNum)
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -89,7 +90,7 @@ func GetCategoryToArticle(c *gin.Context) {
 //删除文章
 func DelArticle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	code := model.DelArticle(id)
+	code := ModelArticle.DelArticle(id)
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -104,7 +105,7 @@ func EditArticle(c *gin.Context) {
 	var article model.Article
 	_ = c.ShouldBindJSON(&article)
 	id, _ := strconv.Atoi(c.Param("id"))
-	code := model.EditArticle(id, &article)
+	code := ModelArticle.EditArticle(id, &article)
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{

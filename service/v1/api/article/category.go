@@ -1,14 +1,15 @@
-package model
+package article
 
 import (
 	"github.com/Peterliang233/go-blog/databases"
-	"github.com/Peterliang233/go-blog/utils/errmsg"
+	"github.com/Peterliang233/go-blog/errmsg"
+	"github.com/Peterliang233/go-blog/service/v1/model"
 	"github.com/jinzhu/gorm"
 )
 
 //检查目录是否存在
-func CheckCategory(data Category) int {
-	var category Category
+func CheckCategory(data model.Category) int {
+	var category model.Category
 	err := databases.Db.Where("id = ?", data.ID).First(&category).Error
 	if err == gorm.ErrRecordNotFound {
 		err = databases.Db.Where("name = ?", data.Name).First(&category).Error
@@ -27,7 +28,7 @@ func CheckCategory(data Category) int {
 }
 
 //创建新的目录
-func CreateCategory(data *Category) int {
+func CreateCategory(data *model.Category) int {
 	err := databases.Db.Create(data).Error
 	if err != nil {
 		return errmsg.Error
@@ -36,8 +37,8 @@ func CreateCategory(data *Category) int {
 }
 
 //获取分类的分页列表
-func GetCategory(PageSize, PageNum int) []Category {
-	var category []Category
+func GetCategory(PageSize, PageNum int) []model.Category {
+	var category []model.Category
 	err := databases.Db.Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&category).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil
@@ -47,7 +48,7 @@ func GetCategory(PageSize, PageNum int) []Category {
 
 //删除目录
 func DeleteCategory(id int) int {
-	var category Category
+	var category model.Category
 	err := databases.Db.Where("id = ?", id).Delete(&category).Error
 	if err != nil {
 		return errmsg.Error
@@ -57,7 +58,7 @@ func DeleteCategory(id int) int {
 
 //编辑目录,修改目录id对应的名字
 func EditCategory(id int, name string) int {
-	var category Category
+	var category model.Category
 	var UserMap = make(map[string]interface{})
 	UserMap["name"] = name
 	err := databases.Db.Model(&category).Where("id = ?", id).Updates(UserMap).Error
@@ -68,7 +69,7 @@ func EditCategory(id int, name string) int {
 }
 
 func CheckCategoryName(name string) int {
-	var category Category
+	var category model.Category
 	if err := databases.Db.Where("name = ?", name).First(&category).Error; err == gorm.ErrRecordNotFound {
 		return errmsg.Success
 	} else if err != nil {
@@ -78,7 +79,7 @@ func CheckCategoryName(name string) int {
 }
 
 func CheckCategoryId(id int) int {
-	var category Category
+	var category model.Category
 	if err := databases.Db.Where("id = ?", id).First(&category).Error; err == gorm.ErrRecordNotFound {
 		return errmsg.ErrCategoryNotExist
 	} else if err != nil {
