@@ -16,6 +16,10 @@ var (
 	DbUser     string
 	DbPassword string
 	DbName     string
+	Addr       string
+	Username   string
+	Password   string
+	Host       string
 )
 
 func init() {
@@ -26,7 +30,7 @@ func init() {
 	}
 	LoadData(cfg)
 	LoadServer(cfg)
-	//LoadLogin(cfg)
+	LoadEmail(cfg)
 }
 
 func LoadServer(file *ini.File) {
@@ -44,7 +48,9 @@ func LoadData(file *ini.File) {
 	DbName = file.Section("database").Key("DbName").MustString("ginblog")
 }
 
-//func LoadLogin(file *ini.File) {
-//	Username = file.Section("login").Key("Username").MustString("Peterliang")
-//	Password = file.Section("login").Key("Password").MustString("666")
-//}
+func LoadEmail(file *ini.File) {
+	Addr = file.Section("email").Key("Addr").MustString("smtp.126.com:25")
+	Username = file.Section("email").Key("Username").MustString("ncuyanping666@126.com")
+	Password = file.Section("email").Key("Password").MustString("OICRHJRGCHSPAAIZ")
+	Host = file.Section("email").Key("Host").MustString("smtp.126.com")
+}

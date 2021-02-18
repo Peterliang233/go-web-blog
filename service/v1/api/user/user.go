@@ -6,13 +6,10 @@ import (
 	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/service/v1/model"
 	"github.com/jinzhu/gorm"
-	"github.com/jordan-wright/email"
 	_ "github.com/jordan-wright/email"
 	"golang.org/x/crypto/scrypt"
 	"log"
-	"net/smtp"
 	_ "net/smtp"
-	"time"
 )
 
 //检查用户名和邮箱是否存在
@@ -119,20 +116,6 @@ func GetRight(username string) (code int) {
 	}
 	if user.Role != 1 {
 		return errmsg.ErrUserNotHaveAddRight
-	}
-	return errmsg.Success
-}
-
-func SendEmail(Email string) int {
-	e := email.NewEmail()
-	e.From = "Peterliang <ncuyanping666@126.com>"
-	e.To = []string{Email}
-	e.Subject = "博客注册通知"
-	e.Text = []byte("博客注册通知！！！\n亲爱的" + Email + ",您的邮箱在" +
-		time.Now().Format("2006-01-02 15:04:05") + "被用于注册ginBlog，感谢您的使用，希望您使用愉快^_^\nPeterliang")
-	err := e.Send("smtp.126.com:25", smtp.PlainAuth("", "ncuyanping666@126.com", "OICRHJRGCHSPAAIZ", "smtp.126.com"))
-	if err != nil {
-		return errmsg.Error
 	}
 	return errmsg.Success
 }

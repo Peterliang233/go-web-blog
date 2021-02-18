@@ -1,8 +1,10 @@
 package v1
 
 import (
+	"github.com/Peterliang233/go-blog/databases"
 	"github.com/Peterliang233/go-blog/errmsg"
 	user2 "github.com/Peterliang233/go-blog/service/v1/api/user"
+	"github.com/Peterliang233/go-blog/service/v1/api/user/email"
 	"github.com/Peterliang233/go-blog/service/v1/api/user/validator"
 	"github.com/Peterliang233/go-blog/service/v1/model"
 	"github.com/gin-gonic/gin"
@@ -10,8 +12,8 @@ import (
 	"strconv"
 )
 
-//添加用户
-func AddUser(c *gin.Context) {
+//验证添加的用户信息
+func VerifyUser(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
 	username := c.MustGet("username").(string)
@@ -41,10 +43,34 @@ func AddUser(c *gin.Context) {
 	}
 	code = user2.CheckUser(data.Username, data.Email) //检查用户名和邮箱是否已经被使用
 	if code == errmsg.Success {
+		email.SendEmail(data.Email, data.Username)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg": map[string]interface{}{
+			"data": map[string]string{
+				"username": data.Username,
+				"email":    data.Email,
+			},
+			"status": errmsg.CodeMsg[code],
+		},
+	})
+}
+
+//注册账户接口
+func Register(c *gin.Context) {
+	var data model.User
+	_ = c.ShouldBindJSON(&data)
+	var code int
+	if err := databases.Db.Table("email").Where("email_name = ?", data.Email).First(&model.Email{}).Error; err != nil {
+		code = errmsg.ErrEmailUnVerify
+	} else {
+		//if err = databases.Db.Create(&data).Error; err != nil {
+		//	code = errmsg.ErrDatabaseCreate
+		//}else{
+		//	code = errmsg.Success
+		//}
 		code = user2.CreateUser(&data)
-		if code == errmsg.Success {
-			user2.SendEmail(data.Email)
-		}
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,

@@ -5,6 +5,7 @@ import (
 	"github.com/Peterliang233/go-blog/configs"
 	"github.com/Peterliang233/go-blog/middleware"
 	v1 "github.com/Peterliang233/go-blog/router/v1"
+	"github.com/Peterliang233/go-blog/service/v1/api/user/email"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,15 +16,17 @@ func InitRouter() {
 	router.Use(middleware.Cors())   //跨域中间件
 	router.Use(middleware.Logger()) //定义日志的中间件
 	router.MaxMultipartMemory = 8
-	auth := router.Group("ap/v1")
+	auth := router.Group("api/v1")
 	auth.Use(middleware.JWTAuthMiddleware()) //jwt中间件认证身份信息
 	{
 		//上传文件单个接口
 		auth.POST("/upload", v1.Upload)
 		//用户模块的接口
+		auth.POST("/email/:id", email.VerifyEmail)
 		user := auth.Group("/user")
 		{
-			user.POST("/add", v1.AddUser)
+			user.POST("/verify", v1.VerifyUser) //验证用户信息
+			user.POST("/add", v1.Register)
 			user.PUT("/:id", v1.EditUser)
 			user.DELETE("/:id", v1.DelUser)
 		}
@@ -43,7 +46,7 @@ func InitRouter() {
 		}
 	}
 	//获取信息的部分，这部分可以作为公共接口暴露在外面
-	routerV1 := router.Group("/ap/v1")
+	routerV1 := router.Group("api/v1")
 	{
 		routerV1.GET("/user/search", v1.GetUsers)
 		routerV1.GET("/category/search", v1.GetCategory)
