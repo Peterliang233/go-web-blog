@@ -13,11 +13,17 @@ import (
 func AddCategory(c *gin.Context) {
 	var data model.Category
 	_ = c.ShouldBindJSON(&data)
+	statusCode := http.StatusOK
 	code := article.CheckCategory(data)
 	if code == errmsg.Success {
 		code = article.CreateCategory(&data)
+		if code != errmsg.Success {
+			statusCode = http.StatusInternalServerError
+		}
+	} else {
+		statusCode = http.StatusNotFound
 	}
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
 			"data":   data,
@@ -36,9 +42,12 @@ func GetCategory(c *gin.Context) {
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
-	data := article.GetCategory(page.PageSize, page.PageNum)
-	code := errmsg.Success
-	c.JSON(http.StatusOK, gin.H{
+	statusCode := http.StatusOK
+	data, code := article.GetCategory(page.PageSize, page.PageNum)
+	if code != errmsg.Success {
+		statusCode = http.StatusNotFound
+	}
+	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
 			"status": errmsg.CodeMsg[code],
@@ -51,7 +60,11 @@ func GetCategory(c *gin.Context) {
 func DelCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := article.DeleteCategory(id)
-	c.JSON(http.StatusOK, gin.H{
+	statusCode := http.StatusOK
+	if code != errmsg.Success {
+		statusCode = http.StatusInternalServerError
+	}
+	c.JSON(statusCode, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{
 			"id":   id,
@@ -64,15 +77,22 @@ func DelCategory(c *gin.Context) {
 func EditCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	name := c.Query("name")
+	statusCode := http.StatusOK
 	code := article.CheckCategoryName(name)
-	if code == errmsg.Success {
+	if code != errmsg.Success {
+		statusCode = http.StatusBadRequest
+	} else {
 		//执行更新的操作
 		code = article.CheckCategoryId(id)
-		if code == errmsg.Success {
-			article.EditCategory(id, name)
+		if code != errmsg.Success {
+			statusCode = http.StatusBadRequest
+			code = article.EditCategory(id, name)
+			if code != errmsg.Success {
+				statusCode = http.StatusInternalServerError
+			}
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(statusCode, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{
 			"code": errmsg.CodeMsg[code],

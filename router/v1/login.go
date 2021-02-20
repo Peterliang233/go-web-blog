@@ -17,7 +17,7 @@ func AuthHandler(c *gin.Context) {
 	var user user
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"code": errmsg.ErrRequest,
 			"msg": map[string]interface{}{
 				"detail": "无效的参数",
@@ -61,8 +61,8 @@ func AuthHandler(c *gin.Context) {
 	//}
 	//检查是否具有登录权限
 	code := user2.CheckLogin(user.Username, user.Password)
-	if code != errmsg.Success {
-		c.JSON(http.StatusOK, gin.H{
+	if code == errmsg.ErrPassword {
+		c.JSON(http.StatusBadRequest, gin.H{
 			"code": code,
 			"msg": map[string]interface{}{
 				"status": errmsg.CodeMsg[code],

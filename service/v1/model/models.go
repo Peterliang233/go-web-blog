@@ -38,8 +38,10 @@ type Email struct {
 }
 
 //评论,多个评论对应一篇文章
-//type Comment struct {
-//	article Article `gorm:"foreignKey:aid" json:"article"`
-//	aid     int     `gorm:"int;not null" json:"aid"`
-//	content string  `gorm:"text;not null" json:"content"`
-//}
+type Comment struct {
+	Article Article `gorm:"foreignKey:aid"`
+	gorm.Model
+	Aid     int    `gorm:"int;not null" json:"aid"`
+	Content string `gorm:"text;not null" json:"content"`
+	Author  string `gorm:"varchar(50);not null" json:"author"`
+}

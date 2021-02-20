@@ -19,13 +19,23 @@ func Upload(c *gin.Context) {
 		})
 	} else {
 		dist := path.Join("./", file.Filename)
-		_ = c.SaveUploadedFile(file, dist)
-		c.JSON(http.StatusOK, gin.H{
-			"code": errmsg.Success,
-			"msg": map[string]interface{}{
-				"data":   "",
-				"detail": "upload success",
-			},
-		})
+		code := c.SaveUploadedFile(file, dist)
+		if code != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code": errmsg.Error,
+				"msg": map[string]interface{}{
+					"data":   "",
+					"detail": "upload error",
+				},
+			})
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"code": errmsg.Success,
+				"msg": map[string]interface{}{
+					"data":   "",
+					"detail": "upload success",
+				},
+			})
+		}
 	}
 }

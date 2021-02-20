@@ -16,12 +16,12 @@ func CheckCategory(data model.Category) int {
 		if err == gorm.ErrRecordNotFound {
 			return errmsg.Success
 		} else if err != nil {
-			return errmsg.ErrDatabaseFind
+			return errmsg.ErrDatabaseNotFound
 		} else {
 			return errmsg.ErrCategoryIdUsed
 		}
 	} else if err != nil {
-		return errmsg.ErrDatabaseFind
+		return errmsg.ErrDatabaseNotFound
 	} else {
 		return errmsg.ErrCategoryUsed
 	}
@@ -37,13 +37,13 @@ func CreateCategory(data *model.Category) int {
 }
 
 //获取分类的分页列表
-func GetCategory(PageSize, PageNum int) []model.Category {
+func GetCategory(PageSize, PageNum int) ([]model.Category, int) {
 	var category []model.Category
 	err := databases.Db.Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&category).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil
+		return nil, errmsg.ErrCategoryNotExist
 	}
-	return category
+	return category, errmsg.Success
 }
 
 //删除目录
@@ -73,7 +73,7 @@ func CheckCategoryName(name string) int {
 	if err := databases.Db.Where("name = ?", name).First(&category).Error; err == gorm.ErrRecordNotFound {
 		return errmsg.Success
 	} else if err != nil {
-		return errmsg.ErrDatabaseFind
+		return errmsg.ErrDatabaseNotFound
 	}
 	return errmsg.ErrCategoryUsed
 }
@@ -83,7 +83,7 @@ func CheckCategoryId(id int) int {
 	if err := databases.Db.Where("id = ?", id).First(&category).Error; err == gorm.ErrRecordNotFound {
 		return errmsg.ErrCategoryNotExist
 	} else if err != nil {
-		return errmsg.ErrDatabaseFind
+		return errmsg.ErrDatabaseNotFound
 	}
 	return errmsg.Success
 }

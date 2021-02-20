@@ -23,6 +23,7 @@ func InitDb() {
 	databases.Db.AutoMigrate(&Article{})
 	//databases.Db.AutoMigrate(&User{})
 	databases.Db.AutoMigrate(&Category{})
+	databases.Db.AutoMigrate(&Comment{})
 	if err != nil {
 		fmt.Println("数据库打开失败")
 	}

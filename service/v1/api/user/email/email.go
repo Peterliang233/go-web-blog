@@ -39,17 +39,21 @@ func VerifyEmail(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	Email.EmailName = c.Query("email")
 	var code int
+	statusCode := http.StatusOK
 	if err != nil {
 		code = errmsg.ErrRequest
+		statusCode = http.StatusBadRequest
 	}
 	if id == 1 {
 		code = errmsg.Success
 		Email.Active = true //激活该邮箱
-		databases.Db.Create(&Email)
+		if err = databases.Db.Create(&Email).Error; err != nil {
+			statusCode = http.StatusInternalServerError
+		}
 	} else {
 		code = errmsg.Error
 	}
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(statusCode, gin.H{
 		"code": code,
 		"data": map[string]interface{}{
 			"email": Email.EmailName,

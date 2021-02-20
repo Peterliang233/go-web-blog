@@ -12,14 +12,14 @@ import (
 	"strconv"
 )
 
-//验证添加的用户信息
+//验证添加注册用户的信息
 func VerifyUser(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
 	username := c.MustGet("username").(string)
 	code := user2.GetRight(username)
 	if code != errmsg.Success {
-		c.JSON(http.StatusOK, gin.H{
+		c.JSON(http.StatusMethodNotAllowed, gin.H{
 			"code": code,
 			"msg": map[string]interface{}{
 				"status": errmsg.CodeMsg[code],
@@ -31,7 +31,7 @@ func VerifyUser(c *gin.Context) {
 	msg, code := validator.Validate(&data)
 	//进行数据的验证
 	if code != errmsg.Success {
-		c.JSON(http.StatusOK, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"code": code,
 			"msg": map[string]interface{}{
 				"detail": msg,
@@ -61,9 +61,10 @@ func VerifyUser(c *gin.Context) {
 func Register(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
-	var code int
+	var code, statusCode int
 	if err := databases.Db.Table("email").Where("email_name = ?", data.Email).First(&model.Email{}).Error; err != nil {
 		code = errmsg.ErrEmailUnVerify
+		statusCode = http.StatusForbidden
 	} else {
 		//if err = databases.Db.Create(&data).Error; err != nil {
 		//	code = errmsg.ErrDatabaseCreate
@@ -71,8 +72,9 @@ func Register(c *gin.Context) {
 		//	code = errmsg.Success
 		//}
 		code = user2.CreateUser(&data)
+		statusCode = http.StatusOK
 	}
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
 			"data": map[string]string{
@@ -92,6 +94,7 @@ type Page struct {
 
 func GetUsers(c *gin.Context) {
 	var page Page
+	var statusCode int
 	_ = c.ShouldBindJSON(&page)
 	if page.PageSize == 0 {
 		page.PageSize = -1
@@ -99,9 +102,13 @@ func GetUsers(c *gin.Context) {
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
-	data, total := user2.GetUsers(page.PageSize, page.PageNum)
-	code := errmsg.Success
-	c.JSON(http.StatusOK, gin.H{
+	data, total, code := user2.GetUsers(page.PageSize, page.PageNum)
+	if code == errmsg.Success {
+		statusCode = http.StatusOK
+	} else {
+		statusCode = http.StatusNotFound
+	}
+	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
 			"status": errmsg.CodeMsg[code],
@@ -115,7 +122,13 @@ func GetUsers(c *gin.Context) {
 func DelUser(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := user2.DeleteUser(id)
-	c.JSON(http.StatusOK, gin.H{
+	var statusCode int
+	if code == errmsg.Success {
+		statusCode = http.StatusOK
+	} else {
+		statusCode = http.StatusInternalServerError
+	}
+	c.JSON(statusCode, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{
 			"id":   id,
@@ -130,14 +143,18 @@ func EditUser(c *gin.Context) {
 	_ = c.ShouldBindJSON(&user)
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := user2.CheckUser(user.Username, user.Email)
+	statusCode := http.StatusInternalServerError
 	if code == errmsg.Success {
 		//执行更新的操作
-		user2.EditUser(id, &user)
+		code = user2.EditUser(id, &user)
+		if code == errmsg.Success {
+			statusCode = http.StatusOK
+		}
 	}
 	//if code == errmsg.ErrUserNameUsed {
 	//	c.Abort()
 	//}
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(statusCode, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{
 			"code": errmsg.CodeMsg[code],

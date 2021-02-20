@@ -1,6 +1,7 @@
-time="2021-02-18T08:30:52+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1 ms" dataSize=99 ip="::1" path=/api/v1/user/verify status=200
-time="2021-02-18T08:30:59+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1251 ms" dataSize=97 ip="::1" path=/api/v1/user/verify status=200
-time="2021-02-18T08:34:06+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="7 ms" dataSize=60 ip="::1" path="/api/v1/email/1?email=2107917115@qq.com" status=200
+time="2021-02-20T17:57:44+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="95 ms" dataSize=225 ip="::1" path=/api/v1/login status=200
+time="2021-02-20T17:59:16+08:00" level=warning Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1 ms" dataSize=102 ip="::1" path=/api/v1/user/verify status=404
+time="2021-02-20T17:59:30+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="2323 ms" dataSize=97 ip="::1" path=/api/v1/user/verify status=200
+15@qq.com" status=200
 time="2021-02-18T08:34:31+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="11 ms" dataSize=97 ip="::1" path=/api/v1/user/add status=200
 vel=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="95 ms" dataSize=224 ip="::1" path=/api/v1/login status=200
 time="2021-02-16T14:20:30+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1 ms" dataSize=64 ip="::1" path=/api/v1/user/add status=200

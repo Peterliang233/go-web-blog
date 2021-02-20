@@ -30,8 +30,9 @@ const (
 	ErrPassword     = 5001
 	ErrNotHaveRight = 5002
 	//数据库查找类错误
-	ErrDatabaseFind   = 6001
-	ErrDatabaseCreate = 6002
+	ErrDatabaseNotFound = 6001
+	ErrDatabaseCreate   = 6002
+	//评论类的错误
 )
 
 //错误信息字典
@@ -53,7 +54,7 @@ var CodeMsg = map[int]string{
 	ErrRequest:             "请求错误",
 	ErrPassword:            "密码错误",
 	ErrNotHaveRight:        "用户无登录权限",
-	ErrDatabaseFind:        "数据库查找错误",
+	ErrDatabaseNotFound:    "数据库查找错误",
 	ErrUserNotHaveAddRight: "用户没有添加权限",
 	ErrUserEmailUsed:       "用户邮箱被使用",
 	ErrEmailUnVerify:       "邮箱未被激活",

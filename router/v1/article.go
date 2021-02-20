@@ -12,9 +12,13 @@ import (
 //添加文章
 func AddArticle(c *gin.Context) {
 	var data model.Article
+	statusCode := http.StatusOK
 	_ = c.ShouldBindJSON(&data)
 	code := ModelArticle.CreateArticle(&data)
-	c.JSON(http.StatusOK, gin.H{
+	if code != errmsg.Success {
+		statusCode = http.StatusNotFound
+	}
+	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
 			"data":   data,
@@ -26,6 +30,7 @@ func AddArticle(c *gin.Context) {
 //查询文章列表
 func GetArticles(c *gin.Context) {
 	var page Page
+	statusCode := http.StatusOK
 	_ = c.ShouldBindJSON(&page)
 	if page.PageSize == 0 {
 		page.PageSize = -1
@@ -34,7 +39,10 @@ func GetArticles(c *gin.Context) {
 		page.PageNum = -1
 	}
 	data, code := ModelArticle.GetArticles(page.PageSize, page.PageNum)
-	c.JSON(http.StatusOK, gin.H{
+	if code != errmsg.Success {
+		statusCode = http.StatusInternalServerError
+	}
+	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
 			"status": errmsg.CodeMsg[code],
@@ -45,6 +53,7 @@ func GetArticles(c *gin.Context) {
 
 //根据文章的id查找对应的文章
 func GetArticle(c *gin.Context) {
+	statusCode := http.StatusOK
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -56,7 +65,10 @@ func GetArticle(c *gin.Context) {
 		})
 	}
 	article, code := ModelArticle.GetArticle(id)
-	c.JSON(http.StatusOK, gin.H{
+	if code != errmsg.Success {
+		statusCode = http.StatusNotFound
+	}
+	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
 			"data":   article,
@@ -68,6 +80,7 @@ func GetArticle(c *gin.Context) {
 //查询某一个目录下面的所有的文章
 func GetCategoryToArticle(c *gin.Context) {
 	var page Page
+	statusCode := http.StatusOK
 	_ = c.ShouldBindJSON(&page)
 	id, _ := strconv.Atoi(c.Param("id"))
 	if page.PageSize == 0 {
@@ -77,7 +90,10 @@ func GetCategoryToArticle(c *gin.Context) {
 		page.PageNum = -1
 	}
 	data, code, total := ModelArticle.GetCategoryToArticles(id, page.PageSize, page.PageNum)
-	c.JSON(http.StatusOK, gin.H{
+	if code != errmsg.Success {
+		statusCode = http.StatusNotFound
+	}
+	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
 			"data":   data,
@@ -91,7 +107,11 @@ func GetCategoryToArticle(c *gin.Context) {
 func DelArticle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := ModelArticle.DelArticle(id)
-	c.JSON(http.StatusOK, gin.H{
+	statusCode := http.StatusOK
+	if code == errmsg.Error {
+		statusCode = http.StatusNotFound
+	}
+	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
 			"id":     id,
@@ -106,7 +126,13 @@ func EditArticle(c *gin.Context) {
 	_ = c.ShouldBindJSON(&article)
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := ModelArticle.EditArticle(id, &article)
-	c.JSON(http.StatusOK, gin.H{
+	statusCode := http.StatusOK
+	if code == errmsg.Error {
+		statusCode = http.StatusInternalServerError
+	} else if code == errmsg.ErrArticleNotExist {
+		statusCode = http.StatusNotFound
+	}
+	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
 			"status": errmsg.CodeMsg[code],

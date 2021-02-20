@@ -17,11 +17,11 @@ func CheckUser(name string, email string) int {
 	var users model.User
 	if err := databases.Db.Table("user").Where("username = ?", name).First(&users).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
-			return errmsg.ErrDatabaseFind
+			return errmsg.ErrDatabaseNotFound
 		}
 		if err = databases.Db.Table("user").Where("email = ?", email).First(&users).Error; err != nil {
 			if err != gorm.ErrRecordNotFound {
-				return errmsg.ErrDatabaseFind
+				return errmsg.ErrDatabaseNotFound
 			} else {
 				return errmsg.Success
 			}
@@ -44,18 +44,24 @@ func CreateUser(data *model.User) int {
 }
 
 //获取用户分页列表
-func GetUsers(PageSize, PageNum int) ([]model.User, int) {
+func GetUsers(PageSize, PageNum int) ([]model.User, int, int) {
 	var users []model.User
 	var total int
+	var code int
 	err := databases.Db.Select("id,username,role").Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&users).Error
 	if err != nil {
-		return nil, 0
+		if err == gorm.ErrRecordNotFound {
+			code = errmsg.ErrUserNotExist
+		} else {
+			code = errmsg.Error
+		}
+		return nil, 0, code
 	}
 	err = databases.Db.Table("user").Count(&total).Error
 	if err != nil {
-		return nil, 0
+		return nil, 0, errmsg.Error
 	}
-	return users, total
+	return users, total, errmsg.Success
 }
 
 //密码加密（加盐操作）
