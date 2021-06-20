@@ -13,6 +13,7 @@ type user struct {
 	Password string `json:"password"`
 }
 
+// AuthHandler 登录验证
 func AuthHandler(c *gin.Context) {
 	var user user
 	err := c.ShouldBindJSON(&user)
@@ -26,7 +27,7 @@ func AuthHandler(c *gin.Context) {
 		})
 		return
 	}
-	//超级管理员，初始化配置文件
+
 	//if user.Username == service.Username && user.Password == service.Password {
 	//	tokenString, code := middleware.GenerateToken(user.Username)
 	//	c.JSON(http.StatusOK, gin.H{
@@ -59,7 +60,6 @@ func AuthHandler(c *gin.Context) {
 	//		})
 	//	}
 	//}
-	//检查是否具有登录权限
 	code := user2.CheckLogin(user.Username, user.Password)
 	if code == errmsg.ErrPassword {
 		c.JSON(http.StatusBadRequest, gin.H{

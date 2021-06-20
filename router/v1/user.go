@@ -12,7 +12,7 @@ import (
 	"strconv"
 )
 
-//验证添加注册用户的信息
+// VerifyUser 验证添加注册用户的信息
 func VerifyUser(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
@@ -41,11 +41,14 @@ func VerifyUser(c *gin.Context) {
 		})
 		return
 	}
-	code = user2.CheckUser(data.Username, data.Email) //检查用户名和邮箱是否已经被使用
+	code = user2.CheckUser(data.Username, data.Email)
+
 	if code == errmsg.Success {
 		email.SendEmail(data.Email, data.Username)
 	}
+
 	c.JSON(http.StatusOK, gin.H{
+
 		"code": code,
 		"msg": map[string]interface{}{
 			"data": map[string]string{
@@ -57,7 +60,7 @@ func VerifyUser(c *gin.Context) {
 	})
 }
 
-//注册账户接口
+// Register 注册账户接口
 func Register(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
@@ -66,11 +69,6 @@ func Register(c *gin.Context) {
 		code = errmsg.ErrEmailUnVerify
 		statusCode = http.StatusForbidden
 	} else {
-		//if err = databases.Db.Create(&data).Error; err != nil {
-		//	code = errmsg.ErrDatabaseCreate
-		//}else{
-		//	code = errmsg.Success
-		//}
 		code = user2.CreateUser(&data)
 		statusCode = http.StatusOK
 	}
@@ -86,12 +84,13 @@ func Register(c *gin.Context) {
 	})
 }
 
-//查询目录
+// Page 查询目录
 type Page struct {
 	PageSize int `json:"page_size"`
 	PageNum  int `json:"page_num"`
 }
 
+// GetUsers 获取所有的用户
 func GetUsers(c *gin.Context) {
 	var page Page
 	var statusCode int
@@ -118,7 +117,7 @@ func GetUsers(c *gin.Context) {
 	})
 }
 
-//删除用户
+// DelUser 删除用户
 func DelUser(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := user2.DeleteUser(id)
@@ -137,7 +136,7 @@ func DelUser(c *gin.Context) {
 	})
 }
 
-//编辑用户的基本信息，但是不会包括修改密码
+// EditUser 编辑用户的基本信息，但是不会包括修改密码
 func EditUser(c *gin.Context) {
 	var user model.User
 	_ = c.ShouldBindJSON(&user)
@@ -151,9 +150,6 @@ func EditUser(c *gin.Context) {
 			statusCode = http.StatusOK
 		}
 	}
-	//if code == errmsg.ErrUserNameUsed {
-	//	c.Abort()
-	//}
 	c.JSON(statusCode, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{
