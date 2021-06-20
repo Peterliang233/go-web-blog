@@ -64,7 +64,7 @@ func GetUsers(PageSize, PageNum int) ([]model.User, int, int) {
 	return users, total, errmsg.Success
 }
 
-//密码加密（加盐操作）
+// ScryptPassword 密码加密（加盐操作）
 func ScryptPassword(password string) string {
 	const KeyLen = 10
 	salt := make([]byte, 8)
@@ -77,7 +77,7 @@ func ScryptPassword(password string) string {
 	return base64.StdEncoding.EncodeToString(HashPassword)
 }
 
-//删除用户
+// DeleteUser 删除用户
 func DeleteUser(id int) int {
 	var user model.User
 	err := databases.Db.Where("id = ?", id).Delete(&user).Error
@@ -106,12 +106,15 @@ func CheckLogin(username string, password string) int {
 	if err := databases.Db.Where("username = ?", username).First(&login).Error; err != nil {
 		return errmsg.Error
 	}
+
 	if ScryptPassword(password) != login.Password {
 		return errmsg.ErrPassword
 	}
+
 	if login.Role > 2 {
 		return errmsg.ErrNotHaveRight
 	}
+
 	return errmsg.Success
 }
 
@@ -120,8 +123,10 @@ func GetRight(username string) (code int) {
 	if err := databases.Db.Where("username = ?", username).First(&user).Error; err != nil {
 		return errmsg.Error
 	}
+
 	if user.Role != 1 {
 		return errmsg.ErrUserNotHaveAddRight
 	}
+
 	return errmsg.Success
 }

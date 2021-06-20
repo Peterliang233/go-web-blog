@@ -18,6 +18,7 @@ func VerifyUser(c *gin.Context) {
 	_ = c.ShouldBindJSON(&data)
 	username := c.MustGet("username").(string)
 	code := user2.GetRight(username)
+
 	if code != errmsg.Success {
 		c.JSON(http.StatusMethodNotAllowed, gin.H{
 			"code": code,
@@ -26,10 +27,11 @@ func VerifyUser(c *gin.Context) {
 				"data":   "",
 			},
 		})
+
 		return
 	}
 	msg, code := validator.Validate(&data)
-	//进行数据的验证
+	// 进行数据的验证
 	if code != errmsg.Success {
 		c.JSON(http.StatusNotFound, gin.H{
 			"code": code,
@@ -39,8 +41,10 @@ func VerifyUser(c *gin.Context) {
 				"data":   "",
 			},
 		})
+
 		return
 	}
+
 	code = user2.CheckUser(data.Username, data.Email)
 
 	if code == errmsg.Success {

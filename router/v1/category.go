@@ -9,12 +9,13 @@ import (
 	"strconv"
 )
 
-//添加目录
+// AddCategory 添加目录
 func AddCategory(c *gin.Context) {
 	var data model.Category
 	_ = c.ShouldBindJSON(&data)
 	statusCode := http.StatusOK
 	code := article.CheckCategory(data)
+
 	if code == errmsg.Success {
 		code = article.CreateCategory(&data)
 		if code != errmsg.Success {
@@ -23,6 +24,7 @@ func AddCategory(c *gin.Context) {
 	} else {
 		statusCode = http.StatusNotFound
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -32,21 +34,25 @@ func AddCategory(c *gin.Context) {
 	})
 }
 
-//查询目录
+// GetCategory 查询目录
 func GetCategory(c *gin.Context) {
 	var page Page
 	_ = c.ShouldBindJSON(&page)
+
 	if page.PageSize == 0 {
 		page.PageSize = -1
 	}
+
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
+
 	statusCode := http.StatusOK
 	data, code := article.GetCategory(page.PageSize, page.PageNum)
 	if code != errmsg.Success {
 		statusCode = http.StatusNotFound
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -56,7 +62,7 @@ func GetCategory(c *gin.Context) {
 	})
 }
 
-//删除目录
+// DelCategory 删除目录
 func DelCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := article.DeleteCategory(id)
@@ -73,7 +79,7 @@ func DelCategory(c *gin.Context) {
 	})
 }
 
-//编辑目录的基本信息
+// EditCategory 编辑目录的基本信息
 func EditCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	name := c.Query("name")

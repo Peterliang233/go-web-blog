@@ -9,15 +9,19 @@ import (
 	"strconv"
 )
 
-//添加文章
+// AddArticle 添加文章
 func AddArticle(c *gin.Context) {
 	var data model.Article
+
 	statusCode := http.StatusOK
+
 	_ = c.ShouldBindJSON(&data)
 	code := ModelArticle.CreateArticle(&data)
+
 	if code != errmsg.Success {
 		statusCode = http.StatusNotFound
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -27,7 +31,7 @@ func AddArticle(c *gin.Context) {
 	})
 }
 
-//查询文章列表
+// GetArticles 查询文章列表
 func GetArticles(c *gin.Context) {
 	var page Page
 	statusCode := http.StatusOK
@@ -51,7 +55,7 @@ func GetArticles(c *gin.Context) {
 	})
 }
 
-//根据文章的id查找对应的文章
+// GetArticle 根据文章的id查找对应的文章
 func GetArticle(c *gin.Context) {
 	statusCode := http.StatusOK
 	id, err := strconv.Atoi(c.Param("id"))
@@ -77,7 +81,7 @@ func GetArticle(c *gin.Context) {
 	})
 }
 
-//查询某一个目录下面的所有的文章
+// GetCategoryToArticle 查询某一个目录下面的所有的文章
 func GetCategoryToArticle(c *gin.Context) {
 	var page Page
 	statusCode := http.StatusOK
@@ -103,7 +107,7 @@ func GetCategoryToArticle(c *gin.Context) {
 	})
 }
 
-//删除文章
+// DelArticle 删除文章
 func DelArticle(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := ModelArticle.DelArticle(id)
@@ -120,7 +124,7 @@ func DelArticle(c *gin.Context) {
 	})
 }
 
-//编辑文章
+// EditArticle 编辑文章
 func EditArticle(c *gin.Context) {
 	var article model.Article
 	_ = c.ShouldBindJSON(&article)

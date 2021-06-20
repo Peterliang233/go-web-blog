@@ -9,15 +9,18 @@ import (
 	"strconv"
 )
 
+// AddComment 添加评论
 func AddComment(c *gin.Context) {
 	var comment model.Comment
 	comment.Author = c.MustGet("username").(string)
 	_ = c.ShouldBindJSON(&comment)
 	code := article.CheckoutArticle(comment.Aid)
 	statusCode := http.StatusOK
+
 	if code != errmsg.Success {
 		statusCode = http.StatusNotFound
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -27,16 +30,19 @@ func AddComment(c *gin.Context) {
 	})
 }
 
+// GetComment 获取相关的评论
 func GetComment(c *gin.Context) {
 	var page Page
 	_ = c.ShouldBindJSON(&page)
+
 	if page.PageSize == 0 {
 		page.PageSize = -1
 	}
+
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
-	id, _ := strconv.Atoi(c.Param("id")) //查询对应id文章的评论
+	id, _ := strconv.Atoi(c.Param("id")) // 查询对应id文章的评论
 	var code, total int
 	var comments []model.Comment
 	code = article.CheckoutArticle(id)
@@ -55,6 +61,7 @@ func GetComment(c *gin.Context) {
 	})
 }
 
+// DelComment 删除相关评论
 func DelComment(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := article.CheckComment(id)

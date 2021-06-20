@@ -1,9 +1,9 @@
-time="2021-02-20T17:57:44+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="95 ms" dataSize=225 ip="::1" path=/api/v1/login status=200
-time="2021-02-20T17:59:16+08:00" level=warning Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1 ms" dataSize=102 ip="::1" path=/api/v1/user/verify status=404
-time="2021-02-20T17:59:30+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="2323 ms" dataSize=97 ip="::1" path=/api/v1/user/verify status=200
-15@qq.com" status=200
-time="2021-02-18T08:34:31+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="11 ms" dataSize=97 ip="::1" path=/api/v1/user/add status=200
-vel=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="95 ms" dataSize=224 ip="::1" path=/api/v1/login status=200
+time="2021-06-20T13:12:29+08:00" level=warning Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="127 ms" dataSize=45 ip=127.0.0.1 path=/api/v1/login status=400
+time="2021-06-20T13:12:44+08:00" level=warning Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="134 ms" dataSize=45 ip=127.0.0.1 path=/api/v1/login status=400
+time="2021-06-20T13:12:53+08:00" level=warning Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="92 ms" dataSize=45 ip=127.0.0.1 path=/api/v1/login status=400
+time="2021-06-20T13:13:00+08:00" level=warning Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="100 ms" dataSize=45 ip=127.0.0.1 path=/api/v1/login status=400
+time="2021-06-20T13:21:54+08:00" level=info Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="97 ms" dataSize=225 ip=127.0.0.1 path=/api/v1/login status=200
+224 ip="::1" path=/api/v1/login status=200
 time="2021-02-16T14:20:30+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1 ms" dataSize=64 ip="::1" path=/api/v1/user/add status=200
 :1" path=/api/v1/article/search status=200
 time="2021-02-16T13:23:32+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="98 ms" dataSize=45 ip="::1" path=/api/v1/login status=200
