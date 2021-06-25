@@ -42,14 +42,21 @@ func GetComment(c *gin.Context) {
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
-	id, _ := strconv.Atoi(c.Param("id")) // 查询对应id文章的评论
+	// 查询对应id文章的评论
+	id, _ := strconv.Atoi(c.Param("id"))
+
 	var code, total int
+
 	var comments []model.Comment
+
 	code = article.CheckoutArticle(id)
+
 	statusCode := http.StatusOK
+
 	if code != errmsg.Success {
 		statusCode = http.StatusBadRequest
 	}
+
 	comments, code, total = article.GetComments(page.PageSize, page.PageNum, id)
 	c.JSON(statusCode, gin.H{
 		"code": code,

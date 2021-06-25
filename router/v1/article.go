@@ -34,15 +34,21 @@ func AddArticle(c *gin.Context) {
 // GetArticles 查询文章列表
 func GetArticles(c *gin.Context) {
 	var page Page
+
 	statusCode := http.StatusOK
+
 	_ = c.ShouldBindJSON(&page)
+
 	if page.PageSize == 0 {
 		page.PageSize = -1
 	}
+
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
+
 	data, code := ModelArticle.GetArticles(page.PageSize, page.PageNum)
+
 	if code != errmsg.Success {
 		statusCode = http.StatusInternalServerError
 	}

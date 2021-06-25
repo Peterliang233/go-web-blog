@@ -84,10 +84,11 @@ func DeleteUser(id int) int {
 	if err != nil {
 		return errmsg.Error
 	}
+
 	return errmsg.Success
 }
 
-//编辑用户
+// EditUser 编辑用户
 func EditUser(id int, data *model.User) int {
 	var user model.User
 	var UserMap = make(map[string]interface{})
@@ -98,6 +99,7 @@ func EditUser(id int, data *model.User) int {
 	if err != nil {
 		return errmsg.Error
 	}
+
 	return errmsg.Success
 }
 

@@ -5,7 +5,6 @@ import (
 	"github.com/Peterliang233/go-blog/configs"
 	"github.com/Peterliang233/go-blog/middleware"
 	v1 "github.com/Peterliang233/go-blog/router/v1"
-	"github.com/Peterliang233/go-blog/service/v1/api/user/email"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,11 +21,11 @@ func InitRouter() {
 		// 上传文件单个接口
 		auth.POST("/upload", v1.Upload)
 		// 用户模块的接口
-		auth.POST("/email/:id", email.VerifyEmail)
+		//auth.POST("/email/:id", email.VerifyEmail)
 		user := auth.Group("/user")
 		{
-			user.POST("/verify", v1.VerifyUser) //验证用户信息
-			user.POST("/add", v1.Register)
+			//user.POST("/verify", v1.VerifyUser) // 验证用户信息
+			//user.POST("/add", v1.Register)
 			user.PUT("/:id", v1.EditUser)
 			user.DELETE("/:id", v1.DelUser)
 		}

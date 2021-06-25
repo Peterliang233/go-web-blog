@@ -30,7 +30,9 @@ func VerifyUser(c *gin.Context) {
 
 		return
 	}
+
 	msg, code := validator.Validate(&data)
+
 	// 进行数据的验证
 	if code != errmsg.Success {
 		c.JSON(http.StatusNotFound, gin.H{
@@ -69,13 +71,16 @@ func Register(c *gin.Context) {
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
 	var code, statusCode int
-	if err := databases.Db.Table("email").Where("email_name = ?", data.Email).First(&model.Email{}).Error; err != nil {
+	if err := databases.Db.Table("email").
+		Where("email_name = ?", data.Email).
+		First(&model.Email{}).Error; err != nil {
 		code = errmsg.ErrEmailUnVerify
 		statusCode = http.StatusForbidden
 	} else {
 		code = user2.CreateUser(&data)
 		statusCode = http.StatusOK
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -106,11 +111,13 @@ func GetUsers(c *gin.Context) {
 		page.PageNum = -1
 	}
 	data, total, code := user2.GetUsers(page.PageSize, page.PageNum)
+
 	if code == errmsg.Success {
 		statusCode = http.StatusOK
 	} else {
 		statusCode = http.StatusNotFound
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -125,7 +132,9 @@ func GetUsers(c *gin.Context) {
 func DelUser(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := user2.DeleteUser(id)
+
 	var statusCode int
+
 	if code == errmsg.Success {
 		statusCode = http.StatusOK
 	} else {

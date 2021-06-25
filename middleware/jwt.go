@@ -17,25 +17,26 @@ type MyClaims struct {
 	jwt.StandardClaims
 }
 
-//生成token
+// GenerateToken 生成token
 func GenerateToken(username string) (string, int) {
 	Claims := MyClaims{
 		username,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(2 * time.Hour).Unix(), //设置过期时间
-			Issuer:    "peter",                              //设置签发人
+			ExpiresAt: time.Now().Add(2 * time.Hour).Unix(), // 设置过期时间
+			Issuer:    "peter",                              // 设置签发人
 		},
 	}
 	reqClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, Claims)
 	token, err := reqClaims.SignedString(MySecret)
+
 	if err != nil {
 		return "", errmsg.Error
-	} else {
-		return token, errmsg.Success
 	}
+
+	return token, errmsg.Success
 }
 
-//解析token
+// ParseToken 解析token
 func ParseToken(tokenString string) (*MyClaims, int) {
 	token, err := jwt.ParseWithClaims(tokenString, &MyClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return MySecret, nil
@@ -50,7 +51,7 @@ func ParseToken(tokenString string) (*MyClaims, int) {
 	}
 }
 
-//jwt中间件
+// JWTAuthMiddleware jwt中间件
 func JWTAuthMiddleware() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		authHeader := c.Request.Header.Get("Authorization")
