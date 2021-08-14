@@ -20,14 +20,10 @@ func InitRouter() {
 	{
 		// 上传文件单个接口
 		auth.POST("/upload", v1.Upload)
-		// 用户模块的接口
-		// auth.POST("/email/:id", email.VerifyEmail)
+		// 用户类接口
 		user := auth.Group("/user")
 		{
-			// user.POST("/verify", v1.VerifyUser) // 验证用户信息
-			//user.POST("/add", v1.Register)
-			user.PUT("/:id", v1.EditUser)
-			user.DELETE("/:id", v1.DelUser)
+			user.PUT("/setting", v1.EditUser)
 		}
 		// 分类模块的接口
 		article := auth.Group("/category")
@@ -52,12 +48,10 @@ func InitRouter() {
 	// 获取信息的部分，这部分可以作为公共接口暴露在外面
 	routerV1 := router.Group("api/v1")
 	{
-		routerV1.GET("/user/search", v1.GetUsers)
-		routerV1.GET("/category/search", v1.GetCategory)
-		routerV1.GET("/article/search", v1.GetArticles)
+		routerV1.GET("/category/all", v1.GetCategory)
+		routerV1.GET("/article/all", v1.GetArticles)
 		routerV1.GET("/article/one/:id", v1.GetArticle)
 		routerV1.GET("/article/category/:id", v1.GetCategoryToArticle)
-		routerV1.GET("/comment/:id", v1.GetComment)
 		routerV1.POST("/login", v1.AuthHandler)
 	}
 

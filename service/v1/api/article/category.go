@@ -5,6 +5,7 @@ import (
 	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/service/v1/model"
 	"github.com/jinzhu/gorm"
+	"github.com/pkg/errors"
 )
 
 // CheckCategory 检查目录是否存在
@@ -12,9 +13,9 @@ func CheckCategory(data model.Category) int {
 	var category model.Category
 	err := databases.Db.Where("id = ?", data.ID).First(&category).Error
 
-	if err == gorm.ErrRecordNotFound {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		err = databases.Db.Where("name = ?", data.Name).First(&category).Error
-		if err == gorm.ErrRecordNotFound {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return errmsg.Success
 		} else if err != nil {
 			return errmsg.ErrDatabaseNotFound

@@ -18,6 +18,7 @@ func Logger() gin.HandlerFunc {
 	filePath := "log/log"
 	LinkName := "latest_log.log"
 	src, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE, 0755)
+
 	if err != nil {
 		fmt.Println("err:", err)
 	}
