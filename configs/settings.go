@@ -28,9 +28,10 @@ func init() {
 		fmt.Println("文件打开失败")
 		os.Exit(1)
 	}
+
 	LoadData(cfg)
+
 	LoadServer(cfg)
-	LoadEmail(cfg)
 }
 
 func LoadServer(file *ini.File) {
@@ -46,11 +47,4 @@ func LoadData(file *ini.File) {
 	DbUser = file.Section("database").Key("DbUser").MustString("root")
 	DbPassword = file.Section("database").Key("DbPassword").MustString("mysqlpassword")
 	DbName = file.Section("database").Key("DbName").MustString("ginblog")
-}
-
-func LoadEmail(file *ini.File) {
-	Addr = file.Section("email").Key("Addr").MustString("smtp.126.com:25")
-	Username = file.Section("email").Key("Username").MustString("ncuyanping666@126.com")
-	Password = file.Section("email").Key("Password").MustString("OICRHJRGCHSPAAIZ")
-	Host = file.Section("email").Key("Host").MustString("smtp.126.com")
 }
