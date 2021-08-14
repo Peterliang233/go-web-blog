@@ -1,12 +1,12 @@
 package errmsg
 
-//错误码
+// 错误码
 const (
 	Success = 200
 	Error   = 500
-	//请求类错误
+	// 请求类错误
 	ErrRequest = 301
-	//code1000开头的是用户错误
+	// code1000开头的是用户错误
 	ErrUserNameUsed        = 1001
 	ErrUserPasswordWrong   = 1002
 	ErrUserNotExist        = 1003
@@ -14,13 +14,13 @@ const (
 	ErrUserNotHaveAddRight = 1005
 	ErrUserEmailUsed       = 1006
 	ErrEmailUnVerify       = 1007
-	//code2000开头的是文章模块错误
+	// code2000开头的是文章模块错误
 	ErrArticleNotExist = 2001
-	//code3000开头的是分类模块错误
+	// code3000开头的是分类模块错误
 	ErrCategoryUsed     = 3001
-	ErrCategoryIdUsed   = 3002
+	ErrCategoryIDUsed   = 3002
 	ErrCategoryNotExist = 3003
-	//token类错误
+	// token类错误
 	InvalidToken      = 4001
 	TokenNotExist     = 4002
 	TokenError        = 4003
@@ -35,7 +35,7 @@ const (
 	//评论类的错误
 )
 
-//错误信息字典
+// 错误信息字典
 var CodeMsg = map[int]string{
 	Success:                "ok",
 	Error:                  "error",
@@ -44,7 +44,7 @@ var CodeMsg = map[int]string{
 	ErrUserPasswordWrong:   "用户密码错误",
 	ErrUserTokenNotExist:   "token不存在",
 	ErrCategoryUsed:        "目录名已经存在",
-	ErrCategoryIdUsed:      "目录id已经存在",
+	ErrCategoryIDUsed:      "目录id已经存在",
 	ErrCategoryNotExist:    "该目录不存在",
 	InvalidToken:           "token不合法",
 	TokenNotExist:          "token不存在",
@@ -59,8 +59,3 @@ var CodeMsg = map[int]string{
 	ErrUserEmailUsed:       "用户邮箱被使用",
 	ErrEmailUnVerify:       "邮箱未被激活",
 }
-
-////获取错误码对应的信息
-//func GetErrMsg(code int) string {
-//	return CodeMsg[code]
-//}

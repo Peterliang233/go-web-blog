@@ -64,7 +64,6 @@ func DelComment(id int) int {
 		Where("id = ?", id).
 		Delete(&model.Comment{}).
 		Error; err != nil {
-
 		return errmsg.Error
 	}
 

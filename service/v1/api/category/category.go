@@ -15,12 +15,13 @@ func CheckCategory(data model.Category) int {
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		err = databases.Db.Where("name = ?", data.Name).First(&category).Error
-		if errors.Is(err, gorm.ErrRecordNotFound) {
+		switch {
+		case errors.Is(err, gorm.ErrRecordNotFound):
 			return errmsg.Success
-		} else if err != nil {
+		case err != nil:
 			return errmsg.ErrDatabaseNotFound
-		} else {
-			return errmsg.ErrCategoryIdUsed
+		default:
+			return errmsg.ErrCategoryIDUsed
 		}
 	} else if err != nil {
 		return errmsg.ErrDatabaseNotFound
@@ -47,7 +48,7 @@ func GetCategory(pageSize, pageNum int) ([]model.Category, int) {
 		Offset((pageNum - 1) * pageSize).
 		Find(&category).Error
 
-	if err != nil && err != gorm.ErrRecordNotFound {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, errmsg.ErrCategoryNotExist
 	}
 
@@ -91,7 +92,7 @@ func CheckCategoryName(name string) int {
 	if err := databases.Db.
 		Where("name = ?", name).
 		First(&category).
-		Error; err == gorm.ErrRecordNotFound {
+		Error; errors.Is(err, gorm.ErrRecordNotFound) {
 		return errmsg.Success
 	} else if err != nil {
 		return errmsg.ErrDatabaseNotFound
@@ -100,13 +101,13 @@ func CheckCategoryName(name string) int {
 	return errmsg.ErrCategoryUsed
 }
 
-// CheckCategoryId 检查目录的id是否存在
-func CheckCategoryId(id int) int {
+// CheckCategoryID 检查目录的id是否存在
+func CheckCategoryID(id int) int {
 	var category model.Category
 	if err := databases.Db.
 		Where("id = ?", id).
 		First(&category).
-		Error; err == gorm.ErrRecordNotFound {
+		Error; errors.Is(err, gorm.ErrRecordNotFound) {
 		return errmsg.ErrCategoryNotExist
 	} else if err != nil {
 		return errmsg.ErrDatabaseNotFound

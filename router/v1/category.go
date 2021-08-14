@@ -89,7 +89,7 @@ func EditCategory(c *gin.Context) {
 		statusCode = http.StatusBadRequest
 	} else {
 		//执行更新的操作
-		code = category.CheckCategoryId(id)
+		code = category.CheckCategoryID(id)
 		if code != errmsg.Success {
 			statusCode = http.StatusBadRequest
 			code = category.EditCategory(id, name)

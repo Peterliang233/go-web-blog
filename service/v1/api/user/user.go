@@ -29,7 +29,6 @@ func EditUser(id int, data *model.User) int {
 	var user model.User
 	var UserMap = make(map[string]interface{})
 	UserMap["username"] = data.Username
-	UserMap["email"] = data.Email
 	UserMap["id"] = data.ID
 	err := databases.Db.Model(&user).Where("id = ?", id).Updates(UserMap).Error
 	if err != nil {
@@ -48,10 +47,6 @@ func CheckLogin(username string, password string) int {
 
 	if ScryptPassword(password) != login.Password {
 		return errmsg.ErrPassword
-	}
-
-	if login.Role > 2 {
-		return errmsg.ErrNotHaveRight
 	}
 
 	return errmsg.Success

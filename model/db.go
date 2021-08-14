@@ -8,8 +8,8 @@ import (
 	"time"
 )
 
-// InitDb 初始化数据库
-func InitDb() {
+// InitDB 初始化数据库
+func InitDB() {
 	var err error
 	databases.Db, err = gorm.Open(configs.Db,
 		fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
@@ -32,8 +32,4 @@ func InitDb() {
 
 	databases.Db.DB().SetMaxOpenConns(100)
 	databases.Db.DB().SetConnMaxLifetime(10 * time.Second)
-	//err = Db.Close()
-	//if err != nil {
-	//	fmt.Println("数据库关闭失败")
-	//}
 }

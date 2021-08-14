@@ -20,18 +20,14 @@ func EditUser(c *gin.Context) {
 	var user model.User
 	_ = c.ShouldBindJSON(&user)
 	id, _ := strconv.Atoi(c.Param("id"))
-	code := user2.CheckUser(user.Username, user.Email)
 
 	statusCode := http.StatusInternalServerError
 
+	//执行更新的操作
+	code := user2.EditUser(id, &user)
 	if code == errmsg.Success {
-		//执行更新的操作
-		code = user2.EditUser(id, &user)
-		if code == errmsg.Success {
-			statusCode = http.StatusOK
-		}
+		statusCode = http.StatusOK
 	}
-
 	c.JSON(statusCode, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{
