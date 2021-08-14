@@ -58,6 +58,7 @@ func GetComment(c *gin.Context) {
 	}
 
 	comments, code, total = article.GetComments(page.PageSize, page.PageNum, id)
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -73,13 +74,16 @@ func DelComment(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := article.CheckComment(id)
 	statusCode := http.StatusOK
+
 	if code != errmsg.Success {
 		statusCode = http.StatusNotFound
 	}
 	code = article.DelComment(id)
+
 	if code != errmsg.Success {
 		statusCode = http.StatusInternalServerError
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{

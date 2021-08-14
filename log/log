@@ -1,4 +1,5 @@
-time="2021-06-20T13:12:29+08:00" level=warning Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="127 ms" dataSize=45 ip=127.0.0.1 path=/api/v1/login status=400
+time="2021-08-14T23:08:34+08:00" level=info Agent=PostmanRuntime/7.28.2 HostName=lyp Method=POST SpendTime="96 ms" dataSize=225 ip="::1" path=/api/v1/login status=200
+tus=400
 time="2021-06-20T13:12:44+08:00" level=warning Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="134 ms" dataSize=45 ip=127.0.0.1 path=/api/v1/login status=400
 time="2021-06-20T13:12:53+08:00" level=warning Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="92 ms" dataSize=45 ip=127.0.0.1 path=/api/v1/login status=400
 time="2021-06-20T13:13:00+08:00" level=warning Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="100 ms" dataSize=45 ip=127.0.0.1 path=/api/v1/login status=400

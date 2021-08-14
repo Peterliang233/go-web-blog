@@ -13,7 +13,7 @@ import (
 var MySecret = []byte(configs.Secret)
 
 type MyClaims struct {
-	Username string `json:"username"` //利用中间件保存一些有用的信息
+	Username string `json:"username"` // 利用中间件保存一些有用的信息
 	jwt.StandardClaims
 }
 
@@ -44,6 +44,7 @@ func ParseToken(tokenString string) (*MyClaims, int) {
 	if err != nil {
 		return nil, errmsg.Error
 	}
+
 	if claims, ok := token.Claims.(*MyClaims); ok && token.Valid {
 		return claims, errmsg.Success
 	} else {
@@ -61,37 +62,46 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 				"msg":    "请求头中的auth格式有误",
 			})
 			c.Abort()
+
 			return
 		}
 		parts := strings.SplitN(authHeader, " ", 2)
+
 		if !(len(parts) == 2 && parts[0] == "Bearer") {
 			c.JSON(http.StatusOK, gin.H{
 				"status": errmsg.InvalidToken,
 				"msg":    errmsg.CodeMsg[errmsg.InvalidToken],
 			})
 			c.Abort()
+
 			return
 		}
+
 		claims, code := ParseToken(parts[1])
-		//token失效
+
+		// token失效
 		if code == errmsg.InvalidToken {
 			c.JSON(http.StatusOK, gin.H{
 				"status": errmsg.InvalidToken,
 				"msg":    errmsg.CodeMsg[errmsg.InvalidToken],
 			})
 			c.Abort()
+
 			return
 		}
-		//token过期
+		// token过期
 		if claims.ExpiresAt < time.Now().Unix() {
 			c.JSON(http.StatusOK, gin.H{
 				"status": errmsg.TokenRunTimeError,
 				"msg":    errmsg.CodeMsg[errmsg.TokenRunTimeError],
 			})
 			c.Abort()
+
 			return
 		}
+
 		c.Set("username", claims.Username)
+
 		c.Next()
 	}
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-//检查目录是否存在
+// CheckCategory 检查目录是否存在
 func CheckCategory(data model.Category) int {
 	var category model.Category
 	err := databases.Db.Where("id = ?", data.ID).First(&category).Error
@@ -22,31 +22,32 @@ func CheckCategory(data model.Category) int {
 		}
 	} else if err != nil {
 		return errmsg.ErrDatabaseNotFound
-	} else {
-		return errmsg.ErrCategoryUsed
 	}
+
+	return errmsg.ErrCategoryUsed
 }
 
-//创建新的目录
+// CreateCategory 创建新的目录
 func CreateCategory(data *model.Category) int {
 	err := databases.Db.Create(data).Error
 	if err != nil {
 		return errmsg.Error
 	}
+
 	return errmsg.Success
 }
 
-//获取分类的分页列表
-func GetCategory(PageSize, PageNum int) ([]model.Category, int) {
+// GetCategory 获取分类的分页列表
+func GetCategory(pageSize, pageNum int) ([]model.Category, int) {
 	var category []model.Category
-	err := databases.Db.Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&category).Error
+	err := databases.Db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&category).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, errmsg.ErrCategoryNotExist
 	}
 	return category, errmsg.Success
 }
 
-//删除目录
+// DeleteCategory 删除目录
 func DeleteCategory(id int) int {
 	var category model.Category
 	err := databases.Db.Where("id = ?", id).Delete(&category).Error
@@ -56,7 +57,7 @@ func DeleteCategory(id int) int {
 	return errmsg.Success
 }
 
-//编辑目录,修改目录id对应的名字
+// EditCategory 编辑目录,修改目录id对应的名字
 func EditCategory(id int, name string) int {
 	var category model.Category
 	var UserMap = make(map[string]interface{})

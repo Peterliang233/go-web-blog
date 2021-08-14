@@ -5,6 +5,7 @@ import (
 	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/service/v1/model"
 	"github.com/jinzhu/gorm"
+	"github.com/pkg/errors"
 )
 
 // CheckoutArticle 查询文章是否存在
@@ -12,8 +13,7 @@ func CheckoutArticle(id int) int {
 	if err := databases.Db.Table("article").
 		Where("id = ?", id).
 		First(&model.Article{}).Error; err != nil {
-
-		if err == gorm.ErrRecordNotFound {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return errmsg.ErrArticleNotExist
 		}
 
@@ -35,7 +35,9 @@ func GetComments(pageSize, pageNum, id int) ([]model.Comment, int, int) {
 		Error; err != nil {
 		return nil, errmsg.Error, 0
 	}
-	if err := databases.Db.Table("comment").
+
+	if err := databases.Db.
+		Table("comment").
 		Where("aid = ?", id).Count(&total).
 		Error; err != nil {
 		return nil, errmsg.Error, 0
@@ -46,7 +48,8 @@ func GetComments(pageSize, pageNum, id int) ([]model.Comment, int, int) {
 
 // CheckComment 检查评论
 func CheckComment(id int) int {
-	if err := databases.Db.Table("comment").
+	if err := databases.Db.
+		Table("comment").
 		Where("id = ?", id).First(&model.Comment{}).
 		Error; err != nil {
 		return errmsg.Error
