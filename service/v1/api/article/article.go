@@ -30,28 +30,49 @@ func GetArticle(id int) (model.Article, int) {
 // GetCategoryToArticles 查询单个目录的id下面的所有文章,并且进行分页显示
 func GetCategoryToArticles(id int, pageSize int, pageNum int) ([]model.Article, int, uint64) {
 	var categoryArticleList []model.Article
+
 	var total uint64
-	if err := databases.Db.Table("article").Where("cid = ?", id).Find(&categoryArticleList).Error; err != nil {
+
+	if err := databases.Db.
+		Table("article").
+		Where("cid = ?", id).
+		Find(&categoryArticleList).
+		Error; err != nil {
+
 		if err == gorm.ErrRecordNotFound {
 			return nil, errmsg.ErrArticleNotExist, 0
 		}
+
 		return nil, errmsg.ErrDatabaseNotFound, 0
 	}
-	err := databases.Db.Limit(pageSize).Offset((pageNum-1)*pageSize).
-		Where("cid = ?", id).Find(&categoryArticleList).Error
+
+	err := databases.Db.
+		Limit(pageSize).
+		Offset((pageNum-1)*pageSize).
+		Where("cid = ?", id).
+		Find(&categoryArticleList).Error
+
 	if err != nil {
 		return nil, errmsg.ErrDatabaseNotFound, 0
 	}
-	if err := databases.Db.Table("article").Where("cid = ?", id).Count(&total).Error; err != nil {
+	if err := databases.Db.
+		Table("article").
+		Where("cid = ?", id).
+		Count(&total).
+		Error; err != nil {
 		return nil, errmsg.ErrDatabaseNotFound, 0
 	}
+
 	return categoryArticleList, errmsg.Success, total
 }
 
 // GetArticles 查询文章列表
 func GetArticles(PageSize, PageNum int) ([]model.Article, int) {
 	var article []model.Article
-	err := databases.Db.Limit(PageSize).Offset((PageNum - 1) * PageSize).Find(&article).Error
+	err := databases.Db.
+		Limit(PageSize).
+		Offset((PageNum - 1) * PageSize).
+		Find(&article).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, errmsg.Error
 	}
@@ -66,7 +87,9 @@ func EditArticle(id int, data *model.Article) int {
 	articleMap["content"] = data.Content
 	articleMap["desc"] = data.Desc
 	articleMap["img"] = data.Img
-	err := databases.Db.Table("article").Where("id = ?", id).
+	err := databases.Db.
+		Table("article").
+		Where("id = ?", id).
 		Updates(articleMap).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {

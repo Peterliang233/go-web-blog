@@ -21,22 +21,22 @@ func InitRouter() {
 		// 上传文件单个接口
 		auth.POST("/upload", v1.Upload)
 		// 用户模块的接口
-		//auth.POST("/email/:id", email.VerifyEmail)
+		// auth.POST("/email/:id", email.VerifyEmail)
 		user := auth.Group("/user")
 		{
-			//user.POST("/verify", v1.VerifyUser) // 验证用户信息
+			// user.POST("/verify", v1.VerifyUser) // 验证用户信息
 			//user.POST("/add", v1.Register)
 			user.PUT("/:id", v1.EditUser)
 			user.DELETE("/:id", v1.DelUser)
 		}
-		// 文章模块的接口
+		// 分类模块的接口
 		article := auth.Group("/category")
 		{
 			article.POST("/add", v1.AddCategory)
 			article.PUT("/:id", v1.EditCategory)
 			article.DELETE("/:id", v1.DelCategory)
 		}
-		// 分类模块的接口
+		// 文章模块的接口
 		category := auth.Group("/article")
 		{
 			category.POST("/add", v1.AddArticle)
@@ -58,7 +58,7 @@ func InitRouter() {
 		routerV1.GET("/article/one/:id", v1.GetArticle)
 		routerV1.GET("/article/category/:id", v1.GetCategoryToArticle)
 		routerV1.GET("/comment/:id", v1.GetComment)
-		routerV1.POST("/login", v1.AuthHandler) // 登录接口
+		routerV1.POST("/login", v1.AuthHandler)
 	}
 
 	err := router.Run(configs.HttpPort)
@@ -66,5 +66,4 @@ func InitRouter() {
 	if err != nil {
 		fmt.Println(" Listening error")
 	}
-
 }

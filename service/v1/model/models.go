@@ -1,16 +1,12 @@
 package model
 
-import "github.com/jinzhu/gorm"
-
 // Article 文章-一个文章对应一个目录，一个目录对应多个文章
 type Article struct {
-	category Category `gorm:"foreignKey:cid"`
-	gorm.Model
+	ID      int    `gorm:"type:int;not null" json:"id"`
 	Title   string `gorm:"type:varchar(30);not null" json:"title"`
 	Cid     int    `gorm:"type:int;not null" json:"cid"`
 	Desc    string `gorm:"type:varchar(30);" json:"desc"`
 	Content string `gorm:"type:text;not null" json:"content"`
-	Uid     int    `gorm:"type:int;not null;" json:"uid"`
 	Img     string `gorm:"type:varchar(30);" json:"img"`
 }
 
@@ -26,7 +22,6 @@ type User struct {
 // Category 目录
 type Category struct {
 	ID   uint   `gorm:"type:int;not null;primary_key;auto_increment" json:"id"`
-	Uid  int    `gorm:"type:int;not null;" json:"uid"`
 	Name string `gorm:"type:varchar(30);not null" json:"name"`
 }
 
@@ -39,8 +34,7 @@ type Email struct {
 
 // Comment 评论,多个评论对应一篇文章
 type Comment struct {
-	Article Article `gorm:"foreignKey:aid"`
-	gorm.Model
+	ID      int    `gorm:"int;not null" json:"id"`
 	Aid     int    `gorm:"int;not null" json:"aid"`
 	Content string `gorm:"text;not null" json:"content"`
 	Author  string `gorm:"varchar(50);not null" json:"author"`
