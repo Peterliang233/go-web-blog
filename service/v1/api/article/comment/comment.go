@@ -1,9 +1,9 @@
-package article
+package comment
 
 import (
 	"github.com/Peterliang233/go-blog/databases"
 	"github.com/Peterliang233/go-blog/errmsg"
-	"github.com/Peterliang233/go-blog/service/v1/model"
+	"github.com/Peterliang233/go-blog/model"
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 )

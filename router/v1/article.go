@@ -2,8 +2,8 @@ package v1
 
 import (
 	"github.com/Peterliang233/go-blog/errmsg"
+	"github.com/Peterliang233/go-blog/model"
 	ModelArticle "github.com/Peterliang233/go-blog/service/v1/api/article"
-	"github.com/Peterliang233/go-blog/service/v1/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

@@ -1,9 +1,9 @@
-package article
+package category
 
 import (
 	"github.com/Peterliang233/go-blog/databases"
 	"github.com/Peterliang233/go-blog/errmsg"
-	"github.com/Peterliang233/go-blog/service/v1/model"
+	"github.com/Peterliang233/go-blog/model"
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 )
@@ -46,6 +46,7 @@ func GetCategory(pageSize, pageNum int) ([]model.Category, int) {
 		Limit(pageSize).
 		Offset((pageNum - 1) * pageSize).
 		Find(&category).Error
+
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, errmsg.ErrCategoryNotExist
 	}
