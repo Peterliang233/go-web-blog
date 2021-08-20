@@ -35,6 +35,9 @@ CREATE TABLE article (
     `desc` text,
     title varchar(66),
     content text,
+    create_at datetime not null,
+    delete_at datetime,
+    update_at datetime,
     foreign key (tag_id) references tag (id),
     foreign key (category_id) references category (id)
 )engine = InnoDB
@@ -46,6 +49,8 @@ CREATE TABLE comment(
     id int primary key auto_increment,
     article_id int,
     content text,
+    create_at datetime not null,
+    delete_at datetime,
     foreign key (article_id) references article (id)
 )engine = InnoDB
  auto_increment = 1

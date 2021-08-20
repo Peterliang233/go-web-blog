@@ -1,31 +1,53 @@
 package model
 
+import "time"
+
 // Article
 type Article struct {
-	ID         int    `gorm:"type:int;not null" json:"id"`
-	CategoryId int    `gorm:"type:int;not null" json:"category_id"`
-	TagId      int    `gorm:"type:int;not null" json:"tag_id"`
-	Title      string `gorm:"type:varchar(30);not null" json:"title"`
-	Desc       string `gorm:"type:varchar(30);" json:"desc"`
-	Content    string `gorm:"type:text;not null" json:"content"`
+	ID         int        `json:"id"`
+	TagID      int        `json:"tag_id"`
+	CategoryID int        `json:"category_id"`
+	Desc       string     `json:"desc"`
+	Title      string     `json:"title"`
+	Content    string     `json:"content"`
+	CreateAt   *time.Time `json:"create_at" gorm:"column:create_at"`
+	DeleteAt   *time.Time `json:"delete_at" gorm:"column:delete_at"`
+	UpdateAt   *time.Time `json:"update_at" gorm:"column:update_at"`
 }
 
 // User
 type User struct {
-	ID       int    `gorm:"type:int;not null;primaryKey;auto_increment" json:"id"`
-	Username string `gorm:"type:varchar(20);not null" json:"username" validate:"required,min=6,max=12" label:"用户名"`
-	Password string `gorm:"type:varchar(20);not null" json:"password" validate:"required,min=6,max=12" label:"用户密码"`
+	ID       int    `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 // Category
 type Category struct {
-	ID   uint   `gorm:"type:int;not null;primary_key;auto_increment" json:"id"`
-	Name string `gorm:"type:varchar(30);not null" json:"name"`
+	ID        int    `json:"id"`
+	ArticleID int    `json:"article_id"`
+	Name      string `json:"name"`
+}
+
+// Like
+type Like struct {
+	ID        int    `json:"id"`
+	ArticleID int    `json:"article_id"`
+	Name      string `json:"name"`
+}
+
+// Tag
+type Tag struct {
+	ID        int    `json:"id"`
+	ArticleID int    `json:"article_id"`
+	Name      string `json:"name"`
 }
 
 // Comment
 type Comment struct {
-	ID        int    `gorm:"int;not null" json:"id"`
-	ArticleId int    `gorm:"int;not null" json:"article_id"`
-	Content   string `gorm:"text;not null" json:"content"`
+	ID        int        `json:"id"`
+	ArticleID int        `json:"article_id"`
+	Content   string     `json:"content"`
+	CreateAt  *time.Time `json:"create_at" gorm:"column:create_at"`
+	DeleteAt  *time.Time `json:"delete_at" gorm:"column:delete_at"`
 }

@@ -19,10 +19,6 @@ func InitDB() {
 			configs.DbPort,
 			configs.DbName,
 		))
-	//databases.Db.SingularTable(true) // 不给表的名字加复数
-	//databases.Db.AutoMigrate(&Article{})
-	//databases.Db.AutoMigrate(&Category{})
-	//databases.Db.AutoMigrate(&Comment{})
 
 	if err != nil {
 		fmt.Println("数据库打开失败")
