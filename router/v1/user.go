@@ -23,11 +23,12 @@ func EditUser(c *gin.Context) {
 
 	statusCode := http.StatusInternalServerError
 
-	//执行更新的操作
+	// 执行更新的操作
 	code := user2.EditUser(id, &user)
 	if code == errmsg.Success {
 		statusCode = http.StatusOK
 	}
+
 	c.JSON(statusCode, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{

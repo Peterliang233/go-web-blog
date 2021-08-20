@@ -74,10 +74,13 @@ func GetArticle(c *gin.Context) {
 			},
 		})
 	}
+
 	article, code := ModelArticle.GetArticle(id)
+
 	if code != errmsg.Success {
 		statusCode = http.StatusNotFound
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -90,19 +93,26 @@ func GetArticle(c *gin.Context) {
 // GetCategoryToArticle 查询某一个目录下面的所有的文章
 func GetCategoryToArticle(c *gin.Context) {
 	var page Page
+
 	statusCode := http.StatusOK
+
 	_ = c.ShouldBindJSON(&page)
 	id, _ := strconv.Atoi(c.Param("id"))
+
 	if page.PageSize == 0 {
 		page.PageSize = -1
 	}
+
 	if page.PageNum == 0 {
 		page.PageNum = -1
 	}
+
 	data, code, total := ModelArticle.GetCategoryToArticles(id, page.PageSize, page.PageNum)
+
 	if code != errmsg.Success {
 		statusCode = http.StatusNotFound
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
