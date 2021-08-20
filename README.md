@@ -20,3 +20,7 @@
 - [3.删除目录](#删除目录)
 #### 上传类
 - [1.上传文件](#上传文件)
+
+
+<a href = "https://dbdiagram.io/d/6117e5532ecb310fc3cb6f68">传送门</a>
+![img.png](source/img.png)
