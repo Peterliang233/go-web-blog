@@ -26,16 +26,16 @@ const (
 	TokenError        = 4003
 	AuthEmpty         = 4004
 	TokenRunTimeError = 4005
-	//登录类错误
+	// 登录类错误
 	ErrPassword     = 5001
 	ErrNotHaveRight = 5002
-	//数据库查找类错误
+	// 数据库查找类错误
 	ErrDatabaseNotFound = 6001
 	ErrDatabaseCreate   = 6002
-	//评论类的错误
+	// 评论类的错误
 )
 
-// 错误信息字典
+// CodeMsg 错误信息字典
 var CodeMsg = map[int]string{
 	Success:                "ok",
 	Error:                  "error",

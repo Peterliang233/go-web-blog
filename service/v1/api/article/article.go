@@ -83,10 +83,8 @@ func GetArticles(PageSize, PageNum int) ([]model.Article, int) {
 func EditArticle(id int, data *model.Article) int {
 	var articleMap = make(map[string]interface{})
 	articleMap["title"] = data.Title
-	articleMap["cid"] = data.Cid
 	articleMap["content"] = data.Content
 	articleMap["desc"] = data.Desc
-	articleMap["img"] = data.Img
 	err := databases.Db.
 		Table("article").
 		Where("id = ?", id).
@@ -101,7 +99,7 @@ func EditArticle(id int, data *model.Article) int {
 	return errmsg.Success
 }
 
-// DelArticle 删除文章
+// DelArticle 删除文章(软删除)
 func DelArticle(id int) int {
 	var article model.Article
 	if err := databases.Db.Where("id = ?", id).Delete(&article).Error; err != nil {
