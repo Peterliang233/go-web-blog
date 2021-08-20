@@ -1,6 +1,6 @@
-time="2021-08-20T11:42:19+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=GET SpendTime="0 ms" dataSize=139 ip="::1" path=/api/v1/category/all status=200
-
-time="2021-08-20T11:37:27+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="5 ms" dataSize=63 ip="::1" path=/api/v1/category/add status=200
+time="2021-08-20T12:10:52+08:00" level=warning Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="0 ms" dataSize=0 ip="::1" path=/api/v1/tag/all status=404
+time="2021-08-20T12:11:12+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="9 ms" dataSize=66 ip="::1" path=/api/v1/tag/add status=200
+atus=200
 time="2021-08-20T11:37:33+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="5 ms" dataSize=64 ip="::1" path=/api/v1/category/add status=200
 time="2021-08-20T11:37:38+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="6 ms" dataSize=64 ip="::1" path=/api/v1/category/add status=200
 tatus=400

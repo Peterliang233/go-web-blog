@@ -47,6 +47,13 @@ func InitRouter() {
 			comment.GET("/all/:id", v1.GetComment)
 			comment.DELETE("/:id", v1.DelComment)
 		}
+
+		// 标签模块的接口
+		tag := auth.Group("/tag")
+		{
+			tag.POST("/add", v1.AddTag)
+			tag.DELETE("/:id", v1.DelTag)
+		}
 	}
 	// 获取信息的部分，这部分可以作为公共接口暴露在外面
 	routerV1 := router.Group("api/v1")
@@ -54,6 +61,7 @@ func InitRouter() {
 		routerV1.GET("/category/all", v1.GetCategory)
 		routerV1.GET("/article/all", v1.GetArticles)
 		routerV1.GET("/article/one/:id", v1.GetArticle)
+		routerV1.GET("/tag/all", v1.GetAllTags)
 		routerV1.GET("/article/category/:id", v1.GetCategoryToArticle)
 		routerV1.POST("/login", v1.AuthHandler)
 	}

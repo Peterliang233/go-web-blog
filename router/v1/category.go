@@ -3,7 +3,7 @@ package v1
 import (
 	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/model"
-	"github.com/Peterliang233/go-blog/service/v1/api/category"
+	categoryService "github.com/Peterliang233/go-blog/service/v1/api/category"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -14,10 +14,10 @@ func AddCategory(c *gin.Context) {
 	var data model.Category
 	_ = c.ShouldBindJSON(&data)
 	statusCode := http.StatusOK
-	code := category.CheckCategory(data)
+	code := categoryService.CheckCategory(data)
 
 	if code == errmsg.Success {
-		code = category.CreateCategory(&data)
+		code = categoryService.CreateCategory(&data)
 		if code != errmsg.Success {
 			statusCode = http.StatusInternalServerError
 		}
@@ -48,7 +48,8 @@ func GetCategory(c *gin.Context) {
 	}
 
 	statusCode := http.StatusOK
-	data, code := category.GetCategory(page.PageSize, page.PageNum)
+	data, code := categoryService.GetCategory(page.PageSize, page.PageNum)
+
 	if code != errmsg.Success {
 		statusCode = http.StatusNotFound
 	}
@@ -65,11 +66,12 @@ func GetCategory(c *gin.Context) {
 // DelCategory 删除分类
 func DelCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	code := category.DeleteCategory(id)
+	code := categoryService.DeleteCategory(id)
 	statusCode := http.StatusOK
 	if code != errmsg.Success {
 		statusCode = http.StatusInternalServerError
 	}
+
 	c.JSON(statusCode, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{
@@ -84,20 +86,22 @@ func EditCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	name := c.Query("name")
 	statusCode := http.StatusOK
-	code := category.CheckCategoryName(name)
+	code := categoryService.CheckCategoryName(name)
+
 	if code != errmsg.Success {
 		statusCode = http.StatusBadRequest
 	} else {
-		//执行更新的操作
-		code = category.CheckCategoryID(id)
+		// 执行更新的操作
+		code = categoryService.CheckCategoryID(id)
 		if code != errmsg.Success {
 			statusCode = http.StatusBadRequest
-			code = category.EditCategory(id, name)
+			code = categoryService.EditCategory(id, name)
 			if code != errmsg.Success {
 				statusCode = http.StatusInternalServerError
 			}
 		}
 	}
+
 	c.JSON(statusCode, gin.H{
 		"status": code,
 		"msg": map[string]interface{}{

@@ -33,6 +33,16 @@ const (
 	ErrDatabaseNotFound = 6001
 	ErrDatabaseCreate   = 6002
 	// 评论类的错误
+	ErrCommentCreate = 7001
+	ErrCommentDelete = 7002
+	ErrCommentGet    = 7003
+	// 标签类错误
+	ErrTagCreate = 8001
+	ErrTagGet    = 8002
+	ErrTagDelete = 8003
+	// 点赞类错误
+	ErrLikeCreate = 9001
+	ErrLikeGet    = 9002
 )
 
 // CodeMsg 错误信息字典
@@ -58,4 +68,12 @@ var CodeMsg = map[int]string{
 	ErrUserNotHaveAddRight: "用户没有添加权限",
 	ErrUserEmailUsed:       "用户邮箱被使用",
 	ErrEmailUnVerify:       "邮箱未被激活",
+	ErrCommentCreate:       "创建评论错误",
+	ErrCommentDelete:       "删除评论错误",
+	ErrCommentGet:          "获取评论错误",
+	ErrTagCreate:           "创建标签错误",
+	ErrTagGet:              "获取标签错误",
+	ErrTagDelete:           "删除标签错误",
+	ErrLikeCreate:          "创建点赞错误",
+	ErrLikeGet:             "获取点赞错误",
 }
