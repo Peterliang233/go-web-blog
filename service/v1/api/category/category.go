@@ -8,13 +8,14 @@ import (
 	"github.com/pkg/errors"
 )
 
-// CheckCategory 检查目录是否存在
+// CheckCategory 检查分类是否存在
 func CheckCategory(data model.Category) int {
 	var category model.Category
 	err := databases.Db.Where("id = ?", data.ID).First(&category).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		err = databases.Db.Where("name = ?", data.Name).First(&category).Error
+
 		switch {
 		case errors.Is(err, gorm.ErrRecordNotFound):
 			return errmsg.Success
@@ -23,6 +24,7 @@ func CheckCategory(data model.Category) int {
 		default:
 			return errmsg.ErrCategoryIDUsed
 		}
+
 	} else if err != nil {
 		return errmsg.ErrDatabaseNotFound
 	}
@@ -30,7 +32,7 @@ func CheckCategory(data model.Category) int {
 	return errmsg.ErrCategoryUsed
 }
 
-// CreateCategory 创建新的目录
+// CreateCategory 创建新的分类
 func CreateCategory(data *model.Category) int {
 	err := databases.Db.Create(data).Error
 	if err != nil {
@@ -55,7 +57,7 @@ func GetCategory(pageSize, pageNum int) ([]model.Category, int) {
 	return category, errmsg.Success
 }
 
-// DeleteCategory 删除目录
+// DeleteCategory 删除分类
 func DeleteCategory(id int) int {
 	var category model.Category
 	if err := databases.Db.
@@ -68,7 +70,7 @@ func DeleteCategory(id int) int {
 	return errmsg.Success
 }
 
-// EditCategory 编辑目录,修改目录id对应的名字
+// EditCategory 编辑分类,修改目录id对应的名字
 func EditCategory(id int, name string) int {
 	var category model.Category
 
@@ -86,7 +88,7 @@ func EditCategory(id int, name string) int {
 	return errmsg.Success
 }
 
-// CheckCategoryName 检查该目录是否存在
+// CheckCategoryName 检查该分类是否存在
 func CheckCategoryName(name string) int {
 	var category model.Category
 	if err := databases.Db.
@@ -101,7 +103,7 @@ func CheckCategoryName(name string) int {
 	return errmsg.ErrCategoryUsed
 }
 
-// CheckCategoryID 检查目录的id是否存在
+// CheckCategoryID 检查分类的id是否存在
 func CheckCategoryID(id int) int {
 	var category model.Category
 	if err := databases.Db.

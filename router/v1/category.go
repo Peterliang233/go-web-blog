@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-// AddCategory 添加目录
+// AddCategory 添加分类
 func AddCategory(c *gin.Context) {
 	var data model.Category
 	_ = c.ShouldBindJSON(&data)
@@ -34,7 +34,7 @@ func AddCategory(c *gin.Context) {
 	})
 }
 
-// GetCategory 查询目录
+// GetCategory 查询分类
 func GetCategory(c *gin.Context) {
 	var page Page
 	_ = c.ShouldBindJSON(&page)
@@ -62,7 +62,7 @@ func GetCategory(c *gin.Context) {
 	})
 }
 
-// DelCategory 删除目录
+// DelCategory 删除分类
 func DelCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := category.DeleteCategory(id)
@@ -79,7 +79,7 @@ func DelCategory(c *gin.Context) {
 	})
 }
 
-// EditCategory 编辑目录的基本信息
+// EditCategory 编辑分类的名字
 func EditCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	name := c.Query("name")
