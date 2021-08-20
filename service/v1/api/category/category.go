@@ -24,7 +24,6 @@ func CheckCategory(data model.Category) int {
 		default:
 			return errmsg.ErrCategoryIDUsed
 		}
-
 	} else if err != nil {
 		return errmsg.ErrDatabaseNotFound
 	}

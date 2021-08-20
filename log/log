@@ -1,8 +1,9 @@
-time="2021-08-14T23:25:04+08:00" level=info Agent=PostmanRuntime/7.28.2 HostName=lyp Method=POST SpendTime="5 ms" dataSize=66 ip="::1" path=/api/v1/category/add status=200
-time="2021-08-14T23:25:10+08:00" level=warning Agent=PostmanRuntime/7.28.2 HostName=lyp Method=POST SpendTime="0 ms" dataSize=83 ip="::1" path=/api/v1/category/add status=404
-time="2021-08-14T23:25:17+08:00" level=warning Agent=PostmanRuntime/7.28.2 HostName=lyp Method=POST SpendTime="1 ms" dataSize=89 ip="::1" path=/api/v1/category/add status=404
-0
-time="2021-06-20T13:13:00+08:00" level=warning Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="100 ms" dataSize=45 ip=127.0.0.1 path=/api/v1/login status=400
+time="2021-08-20T11:42:19+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=GET SpendTime="0 ms" dataSize=139 ip="::1" path=/api/v1/category/all status=200
+
+time="2021-08-20T11:37:27+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="5 ms" dataSize=63 ip="::1" path=/api/v1/category/add status=200
+time="2021-08-20T11:37:33+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="5 ms" dataSize=64 ip="::1" path=/api/v1/category/add status=200
+time="2021-08-20T11:37:38+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="6 ms" dataSize=64 ip="::1" path=/api/v1/category/add status=200
+tatus=400
 time="2021-06-20T13:21:54+08:00" level=info Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="97 ms" dataSize=225 ip=127.0.0.1 path=/api/v1/login status=200
 224 ip="::1" path=/api/v1/login status=200
 time="2021-02-16T14:20:30+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1 ms" dataSize=64 ip="::1" path=/api/v1/user/add status=200

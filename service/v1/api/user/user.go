@@ -27,10 +27,13 @@ func ScryptPassword(password string) string {
 // EditUser 编辑用户
 func EditUser(id int, data *model.User) int {
 	var user model.User
+
 	var UserMap = make(map[string]interface{})
+
 	UserMap["username"] = data.Username
 	UserMap["id"] = data.ID
 	err := databases.Db.Model(&user).Where("id = ?", id).Updates(UserMap).Error
+
 	if err != nil {
 		return errmsg.Error
 	}

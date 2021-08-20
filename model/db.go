@@ -20,6 +20,8 @@ func InitDB() {
 			configs.DbName,
 		))
 
+	databases.Db.SingularTable(true)
+
 	if err != nil {
 		fmt.Println("数据库打开失败")
 	}

@@ -1,4 +1,5 @@
-CREATE DATABASE IF NOT EXISTS ginblog;
+DROP DATABASE IF EXISTS ginblog;
+CREATE DATABASE ginblog;
 use ginblog;
 # source  + .sql文件绝对路径
 DROP TABLE IF EXISTS user;
