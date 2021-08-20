@@ -39,9 +39,12 @@ func InitRouter() {
 			category.PUT("/:id", v1.EditArticle)
 			category.DELETE("/:id", v1.DelArticle)
 		}
+
+		// 评论模块的接口
 		comment := auth.Group("/comment")
 		{
 			comment.POST("/add", v1.AddComment)
+			comment.GET("/all/:id", v1.GetComment)
 			comment.DELETE("/:id", v1.DelComment)
 		}
 	}

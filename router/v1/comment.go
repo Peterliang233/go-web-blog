@@ -12,20 +12,14 @@ import (
 // AddComment 添加评论
 func AddComment(c *gin.Context) {
 	var comment model.Comment
-	comment.Author = c.MustGet("username").(string)
 	_ = c.ShouldBindJSON(&comment)
-	code := comment2.CheckoutArticle(comment.Aid)
 	statusCode := http.StatusOK
 
-	if code != errmsg.Success {
-		statusCode = http.StatusNotFound
-	}
-
 	c.JSON(statusCode, gin.H{
-		"code": code,
+		"code": statusCode,
 		"msg": map[string]interface{}{
 			"data":   comment,
-			"detail": errmsg.CodeMsg[code],
+			"detail": errmsg.CodeMsg[statusCode],
 		},
 	})
 }

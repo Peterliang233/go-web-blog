@@ -38,7 +38,6 @@ func GetCategoryToArticles(id int, pageSize int, pageNum int) ([]model.Article, 
 		Where("cid = ?", id).
 		Find(&categoryArticleList).
 		Error; err != nil {
-
 		if err == gorm.ErrRecordNotFound {
 			return nil, errmsg.ErrArticleNotExist, 0
 		}
@@ -55,6 +54,7 @@ func GetCategoryToArticles(id int, pageSize int, pageNum int) ([]model.Article, 
 	if err != nil {
 		return nil, errmsg.ErrDatabaseNotFound, 0
 	}
+
 	if err := databases.Db.
 		Table("article").
 		Where("cid = ?", id).
@@ -73,9 +73,11 @@ func GetArticles(PageSize, PageNum int) ([]model.Article, int) {
 		Limit(PageSize).
 		Offset((PageNum - 1) * PageSize).
 		Find(&article).Error
+
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, errmsg.Error
 	}
+
 	return article, errmsg.Success
 }
 
@@ -89,13 +91,15 @@ func EditArticle(id int, data *model.Article) int {
 		Table("article").
 		Where("id = ?", id).
 		Updates(articleMap).Error
+
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return errmsg.ErrArticleNotExist
-		} else {
-			return errmsg.Error
 		}
+
+		return errmsg.Error
 	}
+
 	return errmsg.Success
 }
 
