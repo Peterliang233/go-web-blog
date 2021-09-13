@@ -16,6 +16,7 @@ func AddArticle(c *gin.Context) {
 	statusCode := http.StatusOK
 
 	_ = c.ShouldBindJSON(&data)
+
 	code := ModelArticle.CreateArticle(&data)
 
 	if code != errmsg.Success {
@@ -65,7 +66,9 @@ func GetArticles(c *gin.Context) {
 // GetArticle 根据文章的id查找对应的文章
 func GetArticle(c *gin.Context) {
 	statusCode := http.StatusOK
+
 	id, err := strconv.Atoi(c.Param("id"))
+
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": errmsg.ErrRequest,
@@ -126,12 +129,15 @@ func GetCategoryToArticle(c *gin.Context) {
 
 // DelArticle 删除文章
 func DelArticle(c *gin.Context) {
+
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := ModelArticle.DelArticle(id)
 	statusCode := http.StatusOK
+
 	if code == errmsg.Error {
 		statusCode = http.StatusNotFound
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
@@ -147,12 +153,15 @@ func EditArticle(c *gin.Context) {
 	_ = c.ShouldBindJSON(&article)
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := ModelArticle.EditArticle(id, &article)
+
 	statusCode := http.StatusOK
+
 	if code == errmsg.Error {
 		statusCode = http.StatusInternalServerError
 	} else if code == errmsg.ErrArticleNotExist {
 		statusCode = http.StatusNotFound
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{

@@ -9,7 +9,7 @@ import (
 
 // CreateArticle 添加文章
 func CreateArticle(data *model.Article) int {
-	err := databases.Db.Create(&data).Error
+	err := databases.Db.Create(data).Error
 	if err != nil {
 		return errmsg.Error
 	}

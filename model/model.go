@@ -10,9 +10,9 @@ type Article struct {
 	Desc       string     `json:"desc"`
 	Title      string     `json:"title"`
 	Content    string     `json:"content"`
-	CreateAt   *time.Time `json:"create_at" gorm:"column:create_at"`
-	DeleteAt   *time.Time `json:"delete_at" gorm:"column:delete_at"`
-	UpdateAt   *time.Time `json:"update_at" gorm:"column:update_at"`
+	CreatedAt  *time.Time `json:"create_at" gorm:"column:create_at"`
+	DeletedAt  *time.Time `json:"delete_at" gorm:"column:delete_at"`
+	UpdatedAt  *time.Time `json:"update_at" gorm:"column:update_at"`
 }
 
 // User
