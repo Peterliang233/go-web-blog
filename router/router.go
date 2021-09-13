@@ -8,7 +8,7 @@ import (
 	categoryRouter "github.com/Peterliang233/go-blog/router/v1/article/category"
 	commentRouter "github.com/Peterliang233/go-blog/router/v1/article/comment"
 	"github.com/Peterliang233/go-blog/router/v1/article/file"
-	tag2 "github.com/Peterliang233/go-blog/router/v1/article/tag"
+	tagRouter "github.com/Peterliang233/go-blog/router/v1/article/tag"
 	userRouter "github.com/Peterliang233/go-blog/router/v1/user"
 	"github.com/gin-gonic/gin"
 )
@@ -57,8 +57,8 @@ func InitRouter() {
 		// 标签模块的接口
 		tag := auth.Group("/tag")
 		{
-			tag.POST("/add", tag2.AddTag)
-			tag.DELETE("/:id", tag2.DelTag)
+			tag.POST("/add", tagRouter.AddTag)
+			tag.DELETE("/:id", tagRouter.DelTag)
 		}
 	}
 	// 获取信息的部分，这部分可以作为公共接口暴露在外面
@@ -67,7 +67,7 @@ func InitRouter() {
 		routerV1.GET("/category/all", categoryRouter.GetCategory)
 		routerV1.GET("/article/all", articleRouter.GetArticles)
 		routerV1.GET("/article/one/:id", articleRouter.GetArticle)
-		routerV1.GET("/tag/all", tag2.GetAllTags)
+		routerV1.GET("/tag/all", tagRouter.GetAllTags)
 		routerV1.GET("/article/category/:id", articleRouter.GetCategoryToArticle)
 		routerV1.POST("/login", userRouter.AuthHandler)
 	}
