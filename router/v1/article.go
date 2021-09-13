@@ -52,6 +52,7 @@ func GetArticles(c *gin.Context) {
 	if code != errmsg.Success {
 		statusCode = http.StatusInternalServerError
 	}
+
 	c.JSON(statusCode, gin.H{
 		"code": code,
 		"msg": map[string]interface{}{
