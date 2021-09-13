@@ -29,7 +29,7 @@ func AddCategory(c *gin.Context) {
 		"code": code,
 		"msg": map[string]interface{}{
 			"data":   data,
-			"status": errmsg.CodeMsg[code],
+			"detail": errmsg.CodeMsg[code],
 		},
 	})
 }
@@ -67,16 +67,18 @@ func GetCategory(c *gin.Context) {
 func DelCategory(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := categoryService.DeleteCategory(id)
+
 	statusCode := http.StatusOK
+
 	if code != errmsg.Success {
 		statusCode = http.StatusInternalServerError
 	}
 
 	c.JSON(statusCode, gin.H{
-		"status": code,
+		"code": code,
 		"msg": map[string]interface{}{
-			"id":   id,
-			"code": errmsg.CodeMsg[code],
+			"detail": errmsg.CodeMsg[code],
+			"data":   id,
 		},
 	})
 }
@@ -95,19 +97,19 @@ func EditCategory(c *gin.Context) {
 		code = categoryService.CheckCategoryID(id)
 		if code != errmsg.Success {
 			statusCode = http.StatusBadRequest
-			code = categoryService.EditCategory(id, name)
-			if code != errmsg.Success {
-				statusCode = http.StatusInternalServerError
-			}
+		}
+
+		code = categoryService.EditCategory(id, name)
+		if code != errmsg.Success {
+			statusCode = http.StatusInternalServerError
 		}
 	}
 
 	c.JSON(statusCode, gin.H{
-		"status": code,
+		"code": code,
 		"msg": map[string]interface{}{
-			"code": errmsg.CodeMsg[code],
-			"data": name,
-			"id":   id,
+			"detail": errmsg.CodeMsg[code],
+			"data":   name,
 		},
 	})
 }
