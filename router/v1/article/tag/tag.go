@@ -1,4 +1,4 @@
-package v1
+package tag
 
 import (
 	"github.com/Peterliang233/go-blog/errmsg"

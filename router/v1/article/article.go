@@ -1,8 +1,9 @@
-package v1
+package article
 
 import (
 	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/model"
+	"github.com/Peterliang233/go-blog/router/v1/user"
 	ModelArticle "github.com/Peterliang233/go-blog/service/v1/api/article"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -34,7 +35,7 @@ func AddArticle(c *gin.Context) {
 
 // GetArticles 查询文章列表
 func GetArticles(c *gin.Context) {
-	var page Page
+	var page user.Page
 
 	statusCode := http.StatusOK
 
@@ -96,7 +97,7 @@ func GetArticle(c *gin.Context) {
 
 // GetCategoryToArticle 查询某一个目录下面的所有的文章
 func GetCategoryToArticle(c *gin.Context) {
-	var page Page
+	var page user.Page
 
 	statusCode := http.StatusOK
 

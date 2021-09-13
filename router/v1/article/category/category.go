@@ -1,8 +1,9 @@
-package v1
+package category
 
 import (
 	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/model"
+	"github.com/Peterliang233/go-blog/router/v1/user"
 	categoryService "github.com/Peterliang233/go-blog/service/v1/api/category"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -36,7 +37,7 @@ func AddCategory(c *gin.Context) {
 
 // GetCategory 查询分类
 func GetCategory(c *gin.Context) {
-	var page Page
+	var page user.Page
 	_ = c.ShouldBindJSON(&page)
 
 	if page.PageSize == 0 {

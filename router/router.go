@@ -4,7 +4,12 @@ import (
 	"fmt"
 	"github.com/Peterliang233/go-blog/configs"
 	"github.com/Peterliang233/go-blog/middleware"
-	v1 "github.com/Peterliang233/go-blog/router/v1"
+	articleRouter "github.com/Peterliang233/go-blog/router/v1/article"
+	categoryRouter "github.com/Peterliang233/go-blog/router/v1/article/category"
+	commentRouter "github.com/Peterliang233/go-blog/router/v1/article/comment"
+	"github.com/Peterliang233/go-blog/router/v1/article/file"
+	tag2 "github.com/Peterliang233/go-blog/router/v1/article/tag"
+	userRouter "github.com/Peterliang233/go-blog/router/v1/user"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,51 +25,51 @@ func InitRouter() {
 	auth.Use(middleware.JWTAuthMiddleware()) // jwt中间件认证身份信息
 	{
 		// 上传文件单个接口
-		auth.POST("/upload", v1.Upload)
+		auth.POST("/upload", file.Upload)
 		// 用户类接口
 		user := auth.Group("/user")
 		{
-			user.PUT("/setting", v1.EditUser)
+			user.PUT("/setting", userRouter.EditUser)
 		}
 		// 分类模块的接口
 		article := auth.Group("/category")
 		{
-			article.POST("/add", v1.AddCategory)
-			article.PUT("/:id", v1.EditCategory)
-			article.DELETE("/:id", v1.DelCategory)
+			article.POST("/add", categoryRouter.AddCategory)
+			article.PUT("/:id", categoryRouter.EditCategory)
+			article.DELETE("/:id", categoryRouter.DelCategory)
 		}
 		// 文章模块的接口
 		category := auth.Group("/article")
 		{
-			category.POST("/add", v1.AddArticle)
-			category.PUT("/:id", v1.EditArticle)
-			category.DELETE("/:id", v1.DelArticle)
+			category.POST("/add", articleRouter.AddArticle)
+			category.PUT("/:id", articleRouter.EditArticle)
+			category.DELETE("/:id", articleRouter.DelArticle)
 		}
 
 		// 评论模块的接口
 		comment := auth.Group("/comment")
 		{
-			comment.POST("/add", v1.AddComment)
-			comment.GET("/all/:id", v1.GetComment)
-			comment.DELETE("/:id", v1.DelComment)
+			comment.POST("/add", commentRouter.AddComment)
+			comment.GET("/all/:id", commentRouter.GetComment)
+			comment.DELETE("/:id", commentRouter.DelComment)
 		}
 
 		// 标签模块的接口
 		tag := auth.Group("/tag")
 		{
-			tag.POST("/add", v1.AddTag)
-			tag.DELETE("/:id", v1.DelTag)
+			tag.POST("/add", tag2.AddTag)
+			tag.DELETE("/:id", tag2.DelTag)
 		}
 	}
 	// 获取信息的部分，这部分可以作为公共接口暴露在外面
 	routerV1 := router.Group("api/v1")
 	{
-		routerV1.GET("/category/all", v1.GetCategory)
-		routerV1.GET("/article/all", v1.GetArticles)
-		routerV1.GET("/article/one/:id", v1.GetArticle)
-		routerV1.GET("/tag/all", v1.GetAllTags)
-		routerV1.GET("/article/category/:id", v1.GetCategoryToArticle)
-		routerV1.POST("/login", v1.AuthHandler)
+		routerV1.GET("/category/all", categoryRouter.GetCategory)
+		routerV1.GET("/article/all", articleRouter.GetArticles)
+		routerV1.GET("/article/one/:id", articleRouter.GetArticle)
+		routerV1.GET("/tag/all", tag2.GetAllTags)
+		routerV1.GET("/article/category/:id", articleRouter.GetCategoryToArticle)
+		routerV1.POST("/login", userRouter.AuthHandler)
 	}
 
 	err := router.Run(configs.HttpPort)
