@@ -1,14 +1,11 @@
-time="2021-08-20T12:10:52+08:00" level=warning Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="0 ms" dataSize=0 ip="::1" path=/api/v1/tag/all status=404
-time="2021-08-20T12:11:12+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="9 ms" dataSize=66 ip="::1" path=/api/v1/tag/add status=200
-atus=200
-time="2021-08-20T11:37:33+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="5 ms" dataSize=64 ip="::1" path=/api/v1/category/add status=200
-time="2021-08-20T11:37:38+08:00" level=info Agent=PostmanRuntime/7.28.3 HostName=lyp Method=POST SpendTime="6 ms" dataSize=64 ip="::1" path=/api/v1/category/add status=200
-tatus=400
-time="2021-06-20T13:21:54+08:00" level=info Agent=PostmanRuntime/7.28.0 HostName=arch Method=POST SpendTime="97 ms" dataSize=225 ip=127.0.0.1 path=/api/v1/login status=200
-224 ip="::1" path=/api/v1/login status=200
-time="2021-02-16T14:20:30+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="1 ms" dataSize=64 ip="::1" path=/api/v1/user/add status=200
-:1" path=/api/v1/article/search status=200
-time="2021-02-16T13:23:32+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="98 ms" dataSize=45 ip="::1" path=/api/v1/login status=200
+time="2021-09-13T20:57:53+08:00" level=info Agent=PostmanRuntime/7.28.4 HostName=lyp Method=POST SpendTime="93 ms" dataSize=225 ip="::1" path=/api/v1/login status=200
+time="2021-09-13T20:58:07+08:00" level=info Agent=PostmanRuntime/7.28.4 HostName=lyp Method=POST SpendTime="2 ms" dataSize=63 ip="::1" path=/api/v1/tag/add status=200
+time="2021-09-13T20:58:11+08:00" level=info Agent=PostmanRuntime/7.28.4 HostName=lyp Method=GET SpendTime="0 ms" dataSize=90 ip="::1" path=/api/v1/tag/all status=200
+time="2021-09-13T20:58:29+08:00" level=info Agent=PostmanRuntime/7.28.4 HostName=lyp Method=POST SpendTime="9 ms" dataSize=66 ip="::1" path=/api/v1/tag/add status=200
+time="2021-09-13T20:58:40+08:00" level=info Agent=PostmanRuntime/7.28.4 HostName=lyp Method=GET SpendTime="1 ms" dataSize=115 ip="::1" path=/api/v1/tag/all status=200
+time="2021-09-13T20:59:18+08:00" level=info Agent=PostmanRuntime/7.28.4 HostName=lyp Method=DELETE SpendTime="9 ms" dataSize=43 ip="::1" path=/api/v1/tag/2 status=200
+time="2021-09-13T20:59:36+08:00" level=info Agent=PostmanRuntime/7.28.4 HostName=lyp Method=GET SpendTime="0 ms" dataSize=93 ip="::1" path=/api/v1/tag/all status=200
+8:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="98 ms" dataSize=45 ip="::1" path=/api/v1/login status=200
 time="2021-02-16T13:24:52+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="0 ms" dataSize=225 ip="::1" path=/api/v1/login status=200
 time="2021-02-16T13:25:14+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="0 ms" dataSize=102 ip="::1" path=/api/v1/user/add status=200
 ="2021-02-16T12:49:49+08:00" level=info Agent=PostmanRuntime/7.26.10 HostName=peterliang-tm1701 Method=POST SpendTime="6 ms" dataSize=276 ip="::1" path=/api/v1/article/add status=200

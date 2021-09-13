@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// InitRouter 初始化路由
 func InitRouter() {
 	gin.SetMode(configs.AppMode)
 	router := gin.New() // 自定义中间件
