@@ -6,6 +6,7 @@ import (
 	"github.com/Peterliang233/go-blog/model"
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
+	"net/http"
 )
 
 // CheckoutArticle 查询文章是否存在
@@ -30,15 +31,8 @@ func GetComments(pageSize, pageNum, id int) ([]model.Comment, int, int) {
 	var total int
 
 	if err := databases.Db.
-		Select("author, id, content").
-		Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&comments).
-		Error; err != nil {
-		return nil, errmsg.Error, 0
-	}
-
-	if err := databases.Db.
-		Table("comment").
-		Where("aid = ?", id).Count(&total).
+		Where("article_id = ?", id).
+		Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&comments).Count(&total).
 		Error; err != nil {
 		return nil, errmsg.Error, 0
 	}
@@ -68,4 +62,13 @@ func DelComment(id int) int {
 	}
 
 	return errmsg.Success
+}
+
+// AddComment 添加评论
+func AddComment(comment *model.Comment) int {
+	if err := databases.Db.Create(comment).Error; err != nil {
+		return http.StatusInternalServerError
+	}
+
+	return http.StatusOK
 }

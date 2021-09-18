@@ -4,7 +4,7 @@ import (
 	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/model"
 	"github.com/Peterliang233/go-blog/router/v1/user"
-	comment2 "github.com/Peterliang233/go-blog/service/v1/api/article/comment"
+	commentService "github.com/Peterliang233/go-blog/service/v1/api/article/comment"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -14,7 +14,10 @@ import (
 func AddComment(c *gin.Context) {
 	var comment model.Comment
 	_ = c.ShouldBindJSON(&comment)
+
 	statusCode := http.StatusOK
+
+	statusCode = commentService.AddComment(&comment)
 
 	c.JSON(statusCode, gin.H{
 		"code": statusCode,
@@ -44,7 +47,7 @@ func GetComment(c *gin.Context) {
 
 	var comments []model.Comment
 
-	code = comment2.CheckoutArticle(id)
+	code = commentService.CheckoutArticle(id)
 
 	statusCode := http.StatusOK
 
@@ -52,7 +55,7 @@ func GetComment(c *gin.Context) {
 		statusCode = http.StatusBadRequest
 	}
 
-	comments, code, total = comment2.GetComments(page.PageSize, page.PageNum, id)
+	comments, code, total = commentService.GetComments(page.PageSize, page.PageNum, id)
 
 	c.JSON(statusCode, gin.H{
 		"code": code,
@@ -67,14 +70,14 @@ func GetComment(c *gin.Context) {
 // DelComment 删除相关评论
 func DelComment(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	code := comment2.CheckComment(id)
+	code := commentService.CheckComment(id)
 	statusCode := http.StatusOK
 
 	if code != errmsg.Success {
 		statusCode = http.StatusNotFound
 	}
 
-	code = comment2.DelComment(id)
+	code = commentService.DelComment(id)
 
 	if code != errmsg.Success {
 		statusCode = http.StatusInternalServerError
