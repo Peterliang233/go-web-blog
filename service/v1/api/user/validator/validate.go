@@ -25,11 +25,14 @@ func Validate(data interface{}) (string, int) {
 		label := field.Tag.Get("label")
 		return label
 	})
-	err = validate.Struct(data) //进行数据验证，其实就是一个反射的过程
+	// 进行数据验证，其实就是一个反射的过程
+	err = validate.Struct(data)
+
 	if err != nil {
 		for _, v := range err.(validator.ValidationErrors) {
 			return v.Translate(trans), errmsg.Error
 		}
 	}
+
 	return "验证成功", errmsg.Success
 }
