@@ -1,5 +1,8 @@
 # go-web-blog
 基于gin+gorm框架实现的一个博客后台部分
+
+## 项目架构
+![](./source/architecture.png)
 ## api文档
 #### 公共接口
 - [1.用户登录](#用户登录)
