@@ -10,9 +10,9 @@ type Article struct {
 	Desc       string     `json:"desc"`
 	Title      string     `json:"title"`
 	Content    string     `json:"content"`
-	CreatedAt  *time.Time `json:"create_at" gorm:"column:create_at"`
-	DeletedAt  *time.Time `json:"delete_at" gorm:"column:delete_at"`
-	UpdatedAt  *time.Time `json:"update_at" gorm:"column:update_at"`
+	CreatedAt  *time.Time `json:"created_at" gorm:"column:created_at"`
+	DeletedAt  *time.Time `json:"deleted_at" gorm:"column:deleted_at"`
+	UpdatedAt  *time.Time `json:"updated_at" gorm:"column:updated_at"`
 }
 
 // User
@@ -46,6 +46,6 @@ type Comment struct {
 	ID        int        `json:"id"`
 	ArticleID int        `json:"article_id"`
 	Content   string     `json:"content"`
-	CreateAt  *time.Time `json:"create_at" gorm:"column:create_at"`
-	DeleteAt  *time.Time `json:"delete_at" gorm:"column:delete_at"`
+	CreatedAt *time.Time `json:"created_at" gorm:"column:created_at"`
+	DeletedAt *time.Time `json:"deleted_at" gorm:"column:deleted_at"`
 }
