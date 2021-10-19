@@ -2,7 +2,7 @@ package user
 
 import (
 	"encoding/base64"
-	"github.com/Peterliang233/go-blog/databases"
+	"github.com/Peterliang233/go-blog/databases/mysql"
 	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/model"
 	_ "github.com/jordan-wright/email"
@@ -32,7 +32,7 @@ func EditUser(id int, data *model.User) int {
 
 	UserMap["username"] = data.Username
 	UserMap["id"] = data.ID
-	err := databases.Db.Model(&user).Where("id = ?", id).Updates(UserMap).Error
+	err := mysql.Db.Model(&user).Where("id = ?", id).Updates(UserMap).Error
 
 	if err != nil {
 		return errmsg.Error
@@ -44,7 +44,7 @@ func EditUser(id int, data *model.User) int {
 // CheckLogin 检查是否可以登录
 func CheckLogin(username string, password string) int {
 	var login model.User
-	if err := databases.Db.Where("username = ?", username).First(&login).Error; err != nil {
+	if err := mysql.Db.Where("username = ?", username).First(&login).Error; err != nil {
 		return errmsg.Error
 	}
 

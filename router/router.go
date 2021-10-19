@@ -8,6 +8,7 @@ import (
 	categoryRouter "github.com/Peterliang233/go-blog/router/v1/article/category"
 	commentRouter "github.com/Peterliang233/go-blog/router/v1/article/comment"
 	"github.com/Peterliang233/go-blog/router/v1/article/file"
+	likeRouter "github.com/Peterliang233/go-blog/router/v1/article/like"
 	tagRouter "github.com/Peterliang233/go-blog/router/v1/article/tag"
 	userRouter "github.com/Peterliang233/go-blog/router/v1/user"
 	"github.com/gin-gonic/gin"
@@ -59,6 +60,12 @@ func InitRouter() {
 		{
 			tag.POST("/add", tagRouter.AddTag)
 			tag.DELETE("/:id", tagRouter.DelTag)
+		}
+
+		// 点赞模块的接口
+		like := auth.Group("/like")
+		{
+			like.POST("/", likeRouter.Like)
 		}
 	}
 	// 获取信息的部分，这部分可以作为公共接口暴露在外面

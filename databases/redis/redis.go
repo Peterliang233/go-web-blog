@@ -8,11 +8,13 @@ import (
 	"log"
 )
 
+var RedisClient *redis.Client
+
 // InitRedis 初始化redis的操作
 func InitRedis() {
 	redisAddr := fmt.Sprintf("%s:%s", configs.RdHost, configs.RdPort)
 
-	redisClient := redis.NewClient(
+	RedisClient = redis.NewClient(
 		&redis.Options{
 			Addr:     redisAddr,
 			Password: configs.RdPassword,
@@ -20,7 +22,7 @@ func InitRedis() {
 		},
 	)
 
-	pong, err := redisClient.Ping(context.Background()).Result()
+	pong, err := RedisClient.Ping(context.Background()).Result()
 
 	if err != nil {
 		log.Fatalf("redis 启动错误 %v %v\n", pong, err)
