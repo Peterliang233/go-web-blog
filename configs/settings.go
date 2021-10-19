@@ -16,6 +16,9 @@ var (
 	DbUser     string
 	DbPassword string
 	DbName     string
+	RdHost     string
+	RdPort     string
+	RdPassword string
 	Addr       string
 	Username   string
 	Password   string
@@ -30,6 +33,8 @@ func init() {
 	}
 
 	LoadData(cfg)
+
+	LoadRedis(cfg)
 
 	LoadServer(cfg)
 }
@@ -47,4 +52,10 @@ func LoadData(file *ini.File) {
 	DbUser = file.Section("database").Key("DbUser").MustString("root")
 	DbPassword = file.Section("database").Key("DbPassword").MustString("mysqlpassword")
 	DbName = file.Section("database").Key("DbName").MustString("ginblog")
+}
+
+func LoadRedis(file *ini.File) {
+	RdHost = file.Section("redis").Key("RdHost").MustString("localhost")
+	RdPort = file.Section("redis").Key("RdPort").MustString("6379")
+	RdPassword = file.Section("redis").Key("RdPassword").MustString("2562")
 }

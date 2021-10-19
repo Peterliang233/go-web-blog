@@ -1,7 +1,7 @@
 package article
 
 import (
-	"github.com/Peterliang233/go-blog/databases"
+	"github.com/Peterliang233/go-blog/databases/mysql"
 	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/model"
 	"github.com/jinzhu/gorm"
@@ -9,7 +9,7 @@ import (
 
 // CreateArticle 添加文章
 func CreateArticle(data *model.Article) int {
-	err := databases.Db.Create(data).Error
+	err := mysql.Db.Create(data).Error
 	if err != nil {
 		return errmsg.Error
 	}
@@ -20,7 +20,7 @@ func CreateArticle(data *model.Article) int {
 // GetArticle 根据用户的id查询单个文章
 func GetArticle(id int) (model.Article, int) {
 	var article model.Article
-	if err := databases.Db.Where("id = ?", id).First(&article).Error; err != nil {
+	if err := mysql.Db.Where("id = ?", id).First(&article).Error; err != nil {
 		return article, errmsg.ErrArticleNotExist
 	}
 
@@ -33,7 +33,7 @@ func GetCategoryToArticles(id int, pageSize int, pageNum int) ([]model.Article, 
 
 	var total uint64
 
-	if err := databases.Db.
+	if err := mysql.Db.
 		Table("article").
 		Where("cid = ?", id).
 		Find(&categoryArticleList).
@@ -45,7 +45,7 @@ func GetCategoryToArticles(id int, pageSize int, pageNum int) ([]model.Article, 
 		return nil, errmsg.ErrDatabaseNotFound, 0
 	}
 
-	err := databases.Db.
+	err := mysql.Db.
 		Limit(pageSize).
 		Offset((pageNum-1)*pageSize).
 		Where("cid = ?", id).
@@ -55,7 +55,7 @@ func GetCategoryToArticles(id int, pageSize int, pageNum int) ([]model.Article, 
 		return nil, errmsg.ErrDatabaseNotFound, 0
 	}
 
-	if err := databases.Db.
+	if err := mysql.Db.
 		Table("article").
 		Where("cid = ?", id).
 		Count(&total).
@@ -69,7 +69,7 @@ func GetCategoryToArticles(id int, pageSize int, pageNum int) ([]model.Article, 
 // GetArticles 查询文章列表
 func GetArticles(PageSize, PageNum int) ([]model.Article, int) {
 	var article []model.Article
-	err := databases.Db.
+	err := mysql.Db.
 		Limit(PageSize).
 		Offset((PageNum - 1) * PageSize).
 		Find(&article).Error
@@ -87,7 +87,7 @@ func EditArticle(id int, data *model.Article) int {
 	articleMap["title"] = data.Title
 	articleMap["content"] = data.Content
 	articleMap["desc"] = data.Desc
-	err := databases.Db.
+	err := mysql.Db.
 		Table("article").
 		Where("id = ?", id).
 		Updates(articleMap).Error
@@ -106,7 +106,7 @@ func EditArticle(id int, data *model.Article) int {
 // DelArticle 删除文章(软删除)
 func DelArticle(id int) int {
 	var article model.Article
-	if err := databases.Db.Where("id = ?", id).Delete(&article).Error; err != nil {
+	if err := mysql.Db.Where("id = ?", id).Delete(&article).Error; err != nil {
 		return errmsg.Error
 	}
 	return errmsg.Success

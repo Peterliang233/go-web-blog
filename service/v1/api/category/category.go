@@ -1,7 +1,7 @@
 package category
 
 import (
-	"github.com/Peterliang233/go-blog/databases"
+	"github.com/Peterliang233/go-blog/databases/mysql"
 	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/model"
 	"github.com/jinzhu/gorm"
@@ -11,10 +11,10 @@ import (
 // CheckCategory 检查分类是否存在
 func CheckCategory(data model.Category) int {
 	var category model.Category
-	err := databases.Db.Where("id = ?", data.ID).First(&category).Error
+	err := mysql.Db.Where("id = ?", data.ID).First(&category).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		err = databases.Db.Where("name = ?", data.Name).First(&category).Error
+		err = mysql.Db.Where("name = ?", data.Name).First(&category).Error
 
 		switch {
 		case errors.Is(err, gorm.ErrRecordNotFound):
@@ -33,7 +33,7 @@ func CheckCategory(data model.Category) int {
 
 // CreateCategory 创建新的分类
 func CreateCategory(data *model.Category) int {
-	err := databases.Db.Create(data).Error
+	err := mysql.Db.Create(data).Error
 	if err != nil {
 		return errmsg.Error
 	}
@@ -44,7 +44,7 @@ func CreateCategory(data *model.Category) int {
 // GetCategory 获取分类的分页列表
 func GetCategory(pageSize, pageNum int) ([]model.Category, int) {
 	var category []model.Category
-	err := databases.Db.
+	err := mysql.Db.
 		Limit(pageSize).
 		Offset((pageNum - 1) * pageSize).
 		Find(&category).Error
@@ -59,7 +59,7 @@ func GetCategory(pageSize, pageNum int) ([]model.Category, int) {
 // DeleteCategory 删除分类
 func DeleteCategory(id int) int {
 	var category model.Category
-	if err := databases.Db.
+	if err := mysql.Db.
 		Where("id = ?", id).
 		Delete(&category).
 		Error; err != nil {
@@ -76,7 +76,7 @@ func EditCategory(id int, name string) int {
 	var UserMap = make(map[string]interface{})
 
 	UserMap["name"] = name
-	if err := databases.Db.
+	if err := mysql.Db.
 		Model(&category).
 		Where("id = ?", id).
 		Updates(UserMap).
@@ -90,7 +90,7 @@ func EditCategory(id int, name string) int {
 // CheckCategoryName 检查该分类是否存在
 func CheckCategoryName(name string) int {
 	var category model.Category
-	if err := databases.Db.
+	if err := mysql.Db.
 		Where("name = ?", name).
 		First(&category).
 		Error; errors.Is(err, gorm.ErrRecordNotFound) {
@@ -105,7 +105,7 @@ func CheckCategoryName(name string) int {
 // CheckCategoryID 检查分类的id是否存在
 func CheckCategoryID(id int) int {
 	var category model.Category
-	if err := databases.Db.
+	if err := mysql.Db.
 		Where("id = ?", id).
 		First(&category).
 		Error; errors.Is(err, gorm.ErrRecordNotFound) {

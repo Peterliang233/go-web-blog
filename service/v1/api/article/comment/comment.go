@@ -1,7 +1,7 @@
 package comment
 
 import (
-	"github.com/Peterliang233/go-blog/databases"
+	"github.com/Peterliang233/go-blog/databases/mysql"
 	"github.com/Peterliang233/go-blog/errmsg"
 	"github.com/Peterliang233/go-blog/model"
 	"github.com/jinzhu/gorm"
@@ -11,7 +11,7 @@ import (
 
 // CheckoutArticle 查询文章是否存在
 func CheckoutArticle(id int) int {
-	if err := databases.Db.Table("article").
+	if err := mysql.Db.Table("article").
 		Where("id = ?", id).
 		First(&model.Article{}).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -30,7 +30,7 @@ func GetComments(pageSize, pageNum, id int) ([]model.Comment, int, int) {
 
 	var total int
 
-	if err := databases.Db.
+	if err := mysql.Db.
 		Where("article_id = ?", id).
 		Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&comments).Count(&total).
 		Error; err != nil {
@@ -42,7 +42,7 @@ func GetComments(pageSize, pageNum, id int) ([]model.Comment, int, int) {
 
 // CheckComment 检查评论
 func CheckComment(id int) int {
-	if err := databases.Db.
+	if err := mysql.Db.
 		Table("comment").
 		Where("id = ?", id).First(&model.Comment{}).
 		Error; err != nil {
@@ -54,7 +54,7 @@ func CheckComment(id int) int {
 
 // DelComment 删除评论
 func DelComment(id int) int {
-	if err := databases.Db.
+	if err := mysql.Db.
 		Where("id = ?", id).
 		Delete(&model.Comment{}).
 		Error; err != nil {
@@ -66,7 +66,7 @@ func DelComment(id int) int {
 
 // AddComment 添加评论
 func AddComment(comment *model.Comment) int {
-	if err := databases.Db.Create(comment).Error; err != nil {
+	if err := mysql.Db.Create(comment).Error; err != nil {
 		return http.StatusInternalServerError
 	}
 
