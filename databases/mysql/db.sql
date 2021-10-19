@@ -65,3 +65,11 @@ CREATE TABLE `like` (
 )engine = InnoDB
  auto_increment = 1
  default charset =utf8;
+
+DROP TABLE IF EXISTS `email`;
+CREATE TABLE `email` (
+    id int primary key auto_increment,
+    email varchar(33)
+)engine = InnoDB
+auto_increment=1
+default charset = utf8;

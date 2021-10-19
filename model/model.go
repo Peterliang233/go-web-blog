@@ -49,3 +49,9 @@ type Comment struct {
 	CreatedAt *time.Time `json:"created_at" gorm:"column:created_at"`
 	DeletedAt *time.Time `json:"deleted_at" gorm:"column:deleted_at"`
 }
+
+// email
+type Email struct {
+	ID    int    `json:"id"`
+	Email string `json:"email"`
+}
