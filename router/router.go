@@ -11,6 +11,7 @@ import (
 	likeRouter "github.com/Peterliang233/go-blog/router/v1/article/like"
 	tagRouter "github.com/Peterliang233/go-blog/router/v1/article/tag"
 	userRouter "github.com/Peterliang233/go-blog/router/v1/user"
+	likeService "github.com/Peterliang233/go-blog/service/v1/api/like"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,6 +23,10 @@ func InitRouter() {
 	router.Use(middleware.Cors())   // 跨域中间件
 	router.Use(middleware.Logger()) // 定义日志的中间件
 	router.MaxMultipartMemory = 8
+
+	// 开启一格协程定时处理redis里面的缓存的数据
+	go likeService.PersistEmail()
+
 	auth := router.Group("api/v1")
 	auth.Use(middleware.JWTAuthMiddleware()) // jwt中间件认证身份信息
 	{
@@ -65,7 +70,7 @@ func InitRouter() {
 		// 点赞模块的接口
 		like := auth.Group("/like")
 		{
-			like.POST("/", likeRouter.Like)
+			like.POST("", likeRouter.Like)
 		}
 	}
 	// 获取信息的部分，这部分可以作为公共接口暴露在外面
