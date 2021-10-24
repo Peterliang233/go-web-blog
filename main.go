@@ -1,11 +1,13 @@
 package main
 
 import (
+	"github.com/Peterliang233/go-blog/databases/mysql"
+	"github.com/Peterliang233/go-blog/databases/redis"
 	"github.com/Peterliang233/go-blog/router"
-	"github.com/Peterliang233/go-blog/service/v1/model"
 )
 
 func main() {
-	model.InitDb()
+	mysql.InitDB()
+	redis.InitRedis()
 	router.InitRouter()
 }

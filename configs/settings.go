@@ -16,6 +16,9 @@ var (
 	DbUser     string
 	DbPassword string
 	DbName     string
+	RdHost     string
+	RdPort     string
+	RdPassword string
 	Addr       string
 	Username   string
 	Password   string
@@ -28,9 +31,12 @@ func init() {
 		fmt.Println("文件打开失败")
 		os.Exit(1)
 	}
+
 	LoadData(cfg)
+
+	LoadRedis(cfg)
+
 	LoadServer(cfg)
-	LoadEmail(cfg)
 }
 
 func LoadServer(file *ini.File) {
@@ -48,9 +54,8 @@ func LoadData(file *ini.File) {
 	DbName = file.Section("database").Key("DbName").MustString("ginblog")
 }
 
-func LoadEmail(file *ini.File) {
-	Addr = file.Section("email").Key("Addr").MustString("smtp.126.com:25")
-	Username = file.Section("email").Key("Username").MustString("ncuyanping666@126.com")
-	Password = file.Section("email").Key("Password").MustString("OICRHJRGCHSPAAIZ")
-	Host = file.Section("email").Key("Host").MustString("smtp.126.com")
+func LoadRedis(file *ini.File) {
+	RdHost = file.Section("redis").Key("RdHost").MustString("localhost")
+	RdPort = file.Section("redis").Key("RdPort").MustString("6379")
+	RdPassword = file.Section("redis").Key("RdPassword").MustString("2562")
 }

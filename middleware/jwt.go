@@ -37,18 +37,18 @@ func GenerateToken(username string) (string, int) {
 }
 
 // ParseToken 解析token
-func ParseToken(tokenString string) (*MyClaims, int) {
+func ParseToken(tokenString string) (*MyClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &MyClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return MySecret, nil
 	})
 	if err != nil {
-		return nil, errmsg.Error
+		return nil, err
 	}
 
 	if claims, ok := token.Claims.(*MyClaims); ok && token.Valid {
-		return claims, errmsg.Success
+		return claims, nil
 	} else {
-		return nil, errmsg.InvalidToken
+		return nil, err
 	}
 }
 
@@ -58,42 +58,42 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		authHeader := c.Request.Header.Get("Authorization")
 		if authHeader == " " {
 			c.JSON(http.StatusOK, gin.H{
-				"status": errmsg.CodeMsg[errmsg.AuthEmpty],
-				"msg":    "请求头中的auth格式有误",
+				"code": errmsg.Error,
+				"data": map[string]interface{}{
+					"status": errmsg.CodeMsg[errmsg.AuthEmpty],
+					"msg":    "请求头中的auth格式有误",
+				},
 			})
 			c.Abort()
 
 			return
 		}
+
 		parts := strings.SplitN(authHeader, " ", 2)
 
 		if !(len(parts) == 2 && parts[0] == "Bearer") {
 			c.JSON(http.StatusOK, gin.H{
-				"status": errmsg.InvalidToken,
-				"msg":    errmsg.CodeMsg[errmsg.InvalidToken],
+				"code": errmsg.Error,
+				"data": map[string]interface{}{
+					"status": errmsg.InvalidToken,
+					"msg":    errmsg.CodeMsg[errmsg.InvalidToken],
+				},
 			})
 			c.Abort()
 
 			return
 		}
 
-		claims, code := ParseToken(parts[1])
+		claims, err := ParseToken(parts[1])
 
 		// token失效
-		if code == errmsg.InvalidToken {
+		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
-				"status": errmsg.InvalidToken,
-				"msg":    errmsg.CodeMsg[errmsg.InvalidToken],
-			})
-			c.Abort()
-
-			return
-		}
-		// token过期
-		if claims.ExpiresAt < time.Now().Unix() {
-			c.JSON(http.StatusOK, gin.H{
-				"status": errmsg.TokenRunTimeError,
-				"msg":    errmsg.CodeMsg[errmsg.TokenRunTimeError],
+				"code": errmsg.Error,
+				"data": map[string]interface{}{
+					"status": errmsg.InvalidToken,
+					"msg":    err.Error(),
+				},
 			})
 			c.Abort()
 
